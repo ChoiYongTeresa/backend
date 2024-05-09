@@ -1,4 +1,4 @@
 package com.choiteresa.fonation.domain.foodmarket.service;
 
-public class FPService {
+public class FoodmarketService {
 }
