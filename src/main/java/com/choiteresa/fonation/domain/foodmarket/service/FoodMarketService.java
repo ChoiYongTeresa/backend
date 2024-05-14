@@ -1,7 +1,9 @@
 package com.choiteresa.fonation.domain.foodmarket.service;
 
 
+import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.foodmarket.model.*;
+import com.choiteresa.fonation.domain.foodmarket.repository.FoodMarketRepository;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketCodeMapperFilePath;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketSortType;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,9 +22,27 @@ public class FoodMarketService {
 
     @Value("${OPEN_API_KEY}")
     private String SERVICE_KEY;
-
     private FoodMarketCodeMapper codeMapper = new FoodMarketCodeMapper();
+    private FoodMarketRepository foodMarketRepository;
 
+    public List<FoodMarket> saveFoodMarketFromRemoteConfig(){
+        // 로컬 파이썬 서버 API 요청
+        String url = "http://localhost:8000/getFoodmarketInfo";
+        FoodMarketApiResponseDto responseDto = new RestTemplate().getForObject(
+                url,    // 요청 URL
+                FoodMarketApiResponseDto.class
+        );
+
+        if(responseDto == null)
+            throw new RuntimeException("responseDto not found ");
+
+        // API로 얻어온 푸드마켓 정보를 Entity로 변환
+        List<FoodMarket> entityList =
+            responseDto.getItems().stream().
+                    map(FoodMarketResponseDto::toEntity).toList();
+
+        return foodMarketRepository.saveAll(entityList);
+    }
     public void fetchNearbyFoodMarketsSorted(FetchFoodMarketRequestDto dto) throws IOException, ParseException {
         // TODO: 유저의 지역정보와 기부하려는 물품을 받아, 근처의 푸드마켓 정보를 가져오고, 리스트로 정렬해서 보여주기
 
@@ -32,11 +53,11 @@ public class FoodMarketService {
         FoodMarketSortType sortType = FoodMarketSortType.findByValue(dto.getSortType());
 
         // 최종적으로 지역 내 푸드마켓 정보 리스트 반환
-        switch (sortType){
-            case DEFAULT -> null;
-            case NEAREST -> sortByDistance();
-            case NESSASARY -> sortByPreference();
-        }
+//        switch (sortType){
+//            case DEFAULT -> null;
+//            case NEAREST -> sortByDistance();
+//            case NESSASARY -> sortByPreference();
+//        }
     }
 
     public List<PreferenceFoodDto> fetchFoodMarketPreferenceByOpenApi(String foodName, String address) throws IOException, ParseException {

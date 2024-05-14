@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PreferenceFoodApiRequestDto {
-    String serviceKey; // ÀÎÁõÅ°
-    String numOfRows; // ÇÑ ÆäÀÌÁö °á°ú ¼ö
-    String pageNo; // ÆäÀÌÁö ¹øÈ£
-    String dataType; // ÀÀ´äÀÚ·áÇü½Ä
-    String areaCd; // Áö¿ª ÄÚµå
-    String unitySignguCd; // ÅëÇÕ½Ã±º±¸ÄÚµå
-    String spctrCd; // Áö¿ø¼¾ÅÍÄÚµå
-    String preferCnttgClscd; // ¼±È£¹°Ç°ºĞ·ùÄÚµå
+    String serviceKey; // ì¸ì¦í‚¤
+    String numOfRows; // í•œ í˜ì´ì§€ ê²°ê³¼ ìˆ˜
+    String pageNo; // í˜ì´ì§€ ë²ˆí˜¸
+    String dataType; // ì‘ë‹µìë£Œí˜•ì‹
+    String areaCd; // ì§€ì—­ ì½”ë“œ
+    String unitySignguCd; // í†µí•©ì‹œêµ°êµ¬ì½”ë“œ
+    String spctrCd; // ì§€ì›ì„¼í„°ì½”ë“œ
+    String preferCnttgClscd; // ì„ í˜¸ë¬¼í’ˆë¶„ë¥˜ì½”ë“œ
 }
