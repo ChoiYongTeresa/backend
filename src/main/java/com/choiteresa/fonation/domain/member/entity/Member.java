@@ -1,6 +1,5 @@
 package com.choiteresa.fonation.domain.member.entity;
 import com.choiteresa.fonation.domain.role.entity.Role;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +40,6 @@ public class Member {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-}
+
+    }
+
