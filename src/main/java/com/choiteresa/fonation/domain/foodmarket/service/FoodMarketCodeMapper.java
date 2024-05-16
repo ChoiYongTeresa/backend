@@ -4,6 +4,7 @@ import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketCodeMap
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,14 +15,18 @@ import java.util.Iterator;
 
 public class FoodMarketCodeMapper {
     private JSONParser jsonParser = new JSONParser();
-    private HashMap<FoodMarketCodeMapperFilePath,Reader> mapperCache = new HashMap<>();
-    public String convertCodeToValue(FoodMarketCodeMapperFilePath filepath,String code) throws IOException, ParseException {
+    private HashMap<FoodMarketCodeMapperFilePath, Reader> mapperCache = new HashMap<>();
+
+    public void cacheUpdate(FoodMarketCodeMapperFilePath filepath) throws IOException {
+
+        // 캐시가 없는 Reader 라면 ClassPathResource를 가져오고 갱신
+        mapperCache.put(filepath, new FileReader(new ClassPathResource(filepath.getPath()).getFile()));
+    }
+    public String convertCodeToValue(FoodMarketCodeMapperFilePath filepath, String code) throws IOException, ParseException {
         // 코드를 데이터 값으로 매핑하는 함수
 
-        // 캐시가 없는 Reader 라면 갱신
-        if(!mapperCache.containsKey(filepath)){
-            mapperCache.put(filepath,new FileReader(filepath.getPath()));
-        }
+        // 캐시가 없는 Reader 라면 ClassPathResource를 가져오고 갱신
+        cacheUpdate(filepath);
 
         Reader reader = mapperCache.get(filepath);
         JSONObject mapper = (JSONObject) jsonParser.parse(reader);
@@ -30,28 +35,25 @@ public class FoodMarketCodeMapper {
 
     public String convertValueToCode(FoodMarketCodeMapperFilePath filepath, String value) throws IOException, ParseException {
         // 코드를 데이터 값으로 매핑하는 함수
-        // 캐시가 없는 Reader 라면 갱신
-        if(!mapperCache.containsKey(filepath)){
-            mapperCache.put(filepath,new FileReader(filepath.getPath()));
-        }
+
+        // 캐시가 없는 Reader 라면 ClassPathResource를 가져오고 갱신
+        cacheUpdate(filepath);
 
         Reader reader = mapperCache.get(filepath);
         JSONObject mapper = (JSONObject) jsonParser.parse(reader);
 
-        if(mapper.containsValue(value)){
+        if (mapper.containsValue(value)) {
             // 찾아온 JSON 파일에 대한 key 집합을 가져오기
-            Iterator iterator= mapper.keySet().stream().iterator();
+            Iterator iterator = mapper.keySet().stream().iterator();
 
             // key에 대해 value가 나오는 구간을 찾아 해당 key(code)를 반환하기
-            while(iterator.hasNext()){
-                String key = (String)iterator.next();
-                String found = (String)mapper.get(key);
-                if(found.equals(value)){
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String found = (String) mapper.get(key);
+                if (found.equals(value)) {
                     return key;
                 }
             }
-        }else{
-            throw new RuntimeException("not found in "+filepath.getPath()+"_mapper.json: "+value);
         }
 
         return null;
