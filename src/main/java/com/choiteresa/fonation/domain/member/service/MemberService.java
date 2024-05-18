@@ -1,9 +1,6 @@
 package com.choiteresa.fonation.domain.member.service;
 
-import com.choiteresa.fonation.domain.member.dto.AdminLoginRequestDto;
-import com.choiteresa.fonation.domain.member.dto.AdminRegisterRequestDto;
-import com.choiteresa.fonation.domain.member.dto.UserLoginRequestDto;
-import com.choiteresa.fonation.domain.member.dto.UserRegisterRequestDto;
+import com.choiteresa.fonation.domain.member.dto.*;
 import com.choiteresa.fonation.domain.member.entity.Member;
 import com.choiteresa.fonation.domain.member.repository.MemberRepository;
 import com.choiteresa.fonation.domain.role.entity.Role;
@@ -26,7 +23,7 @@ public class MemberService {
         if(role.isPresent()){
             System.out.println(role.isPresent());
             Member member = memberDto.toEntity(role.get());
-            if(validateMember(member.getUserId())){
+            if(validateMember(member.getMemberId())){
                 return -1;
             }
             Member newMember = memberRepository.save(member);
@@ -42,7 +39,7 @@ public class MemberService {
         if(role.isPresent()){
             System.out.println(role.isPresent());
             Member member = memberDto.toEntity(role.get());
-            if(validateMember(member.getUserId())){
+            if(validateMember(member.getMemberId())){
                 return -1;
             }
             Member newMember = memberRepository.save(member);
@@ -53,31 +50,37 @@ public class MemberService {
     }
 
     public boolean validateMember(String userId){
-        Optional<Member> findMember = memberRepository.findByUserId(userId);
+        Optional<Member> findMember = memberRepository.findByMemberId(userId);
         System.out.println(findMember.isPresent());
         return findMember.isPresent();
     }
 
     public int loginUser(UserLoginRequestDto loginRequest){
-        Optional<Member> findMember = memberRepository.findByUserId(loginRequest.getUserId());
+        Optional<Member> findMember = memberRepository.findByMemberId(loginRequest.getMemberId());
 
-        if (findMember.isPresent() && findMember.get().getPassword() == loginRequest.getPassword()){
+        if (findMember.isPresent() &&
+                findMember.get().getPassword().equals(loginRequest.getPassword()) &&
+                findMember.get().getRole().getRoleName().equals("user") ){
             return 1;
 
         } else return -1;
     }
 
     public int loginAdmin(AdminLoginRequestDto loginRequest){
-        Optional<Member> findMember = memberRepository.findByUserId(loginRequest.getUserId());
+        Optional<Member> findMember = memberRepository.findByMemberId(loginRequest.getMemberId());
 
-        if (findMember.isPresent() && findMember.get().getPassword().equals(loginRequest.getPassword())){
+        if (findMember.isPresent() &&
+                findMember.get().getPassword().equals(loginRequest.getPassword()) &&
+                findMember.get().getRole().getRoleName().equals("admin")){
             return 1;
 
         } else {
-            System.out.println(findMember.isPresent());
-            System.out.println(findMember.get().getPassword());
-            System.out.println(loginRequest.getPassword());
             return -1;
         }
+    }
+    public Optional<Member> summaryMemberInfo(SummaryRequestDto summaryRequest){
+        Optional<Member> findMember = memberRepository.findByMemberId(summaryRequest.getMemberId());
+
+        return findMember;
     }
 }

@@ -12,19 +12,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class UserRegisterRequestDto {
-    private String userId;
+    private String memberId;
     private String password;
     private String email;
-    private String userName;
+    private String memberName;
     private String phoneNumber;
     private String address;
 
     public Member toEntity(Role role){
         return Member.builder()
-                .userId(this.userId)
+                .memberId(this.memberId)
                 .password(this.password)
                 .email(this.email)
-                .userName(this.userName)
+                .memberName(this.memberName)
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
                 .role(role)

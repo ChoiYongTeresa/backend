@@ -17,12 +17,12 @@ public class Member {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    private String userId;
+    @Column(name = "member_id", nullable = false, unique = true)
+    private String memberId;
 
-    //    @JsonProperty("user_name")
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+    //    @JsonProperty("memberName")
+    @Column(name = "memberName", nullable = false)
+    private String memberName;
 
     @Column(name = "address", nullable = false)
     private String address;

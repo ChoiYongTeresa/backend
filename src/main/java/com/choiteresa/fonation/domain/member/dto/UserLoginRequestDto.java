@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class UserLoginRequestDto {
-    private String userId;
+    private String memberId;
     private String password;
 
 //    public Member toEntity(Role role){
@@ -19,7 +19,7 @@ public class UserLoginRequestDto {
 //                .password(this.password)
 //                .email(this.email)
 //                .userName(this.userName)
-//                .phoneNumber(this.phoneNumber)
+//                .phone_number(this.phone_number)
 //                .address(this.address)
 //                .role(role)
 //                .build();
