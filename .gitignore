@@ -1,4 +1,16 @@
+# config
 application.yaml
+
+# resources
 resources
+
+# gradle
+build
 .gradle
+
+# IntelliJ
 .idea
+
+# MacOS
+.DS_Store
+
