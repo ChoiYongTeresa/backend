@@ -145,8 +145,8 @@ public class FoodMarketService {
             // 첫 번째 요소의 값이 가장 작고, 맨 끝의 요소가 가장 값이 크므로 min, max를 지정한다.
             // TODO: 만약 이 물품을 선호하지 않는다면 값으로 어떻게 나타낼건가?
             // TODO: min==max일 경우, 어떻게 처리할 것인가?
-            int max = preferenceFoodList.getLast().getHoldQuantity();
-            int min = preferenceFoodList.getFirst().getHoldQuantity();
+            int max = preferenceFoodList.get(preferenceFoodList.size()-1).getHoldQuantity();
+            int min = preferenceFoodList.get(0).getHoldQuantity();
 
             // 위의 리스트로 나온 센터당 min-max scaling을 진행한 후, 최종 선호도 합 누적
             for(PreferenceFoodResponseDto preferenceFood : preferenceFoodList){
