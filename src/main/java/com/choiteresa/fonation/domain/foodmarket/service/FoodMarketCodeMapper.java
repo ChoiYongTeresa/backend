@@ -19,13 +19,13 @@ public class FoodMarketCodeMapper {
 
     public void cacheUpdate(FoodMarketCodeMapperFilePath filepath) throws IOException {
 
-        // Ä³½Ã°¡ ¾ø´Â Reader ¶ó¸é ClassPathResource¸¦ °¡Á®¿À°í °»½Å
+        // ìºì‹œê°€ ì—†ëŠ” Reader ë¼ë©´ ClassPathResourceë¥¼ ê°€ì ¸ì˜¤ê³  ê°±ì‹ 
         mapperCache.put(filepath, new FileReader(new ClassPathResource(filepath.getPath()).getFile()));
     }
     public String convertCodeToValue(FoodMarketCodeMapperFilePath filepath, String code) throws IOException, ParseException {
-        // ÄÚµå¸¦ µ¥ÀÌÅÍ °ªÀ¸·Î ¸ÅÇÎÇÏ´Â ÇÔ¼ö
+        // ì½”ë“œë¥¼ ë°ì´í„° ê°’ìœ¼ë¡œ ë§¤í•‘í•˜ëŠ” í•¨ìˆ˜
 
-        // Ä³½Ã°¡ ¾ø´Â Reader ¶ó¸é ClassPathResource¸¦ °¡Á®¿À°í °»½Å
+        // ìºì‹œê°€ ì—†ëŠ” Reader ë¼ë©´ ClassPathResourceë¥¼ ê°€ì ¸ì˜¤ê³  ê°±ì‹ 
         cacheUpdate(filepath);
 
         Reader reader = mapperCache.get(filepath);
@@ -34,19 +34,19 @@ public class FoodMarketCodeMapper {
     }
 
     public String convertValueToCode(FoodMarketCodeMapperFilePath filepath, String value) throws IOException, ParseException {
-        // ÄÚµå¸¦ µ¥ÀÌÅÍ °ªÀ¸·Î ¸ÅÇÎÇÏ´Â ÇÔ¼ö
+        // ì½”ë“œë¥¼ ë°ì´í„° ê°’ìœ¼ë¡œ ë§¤í•‘í•˜ëŠ” í•¨ìˆ˜
 
-        // Ä³½Ã°¡ ¾ø´Â Reader ¶ó¸é ClassPathResource¸¦ °¡Á®¿À°í °»½Å
+        // ìºì‹œê°€ ì—†ëŠ” Reader ë¼ë©´ ClassPathResourceë¥¼ ê°€ì ¸ì˜¤ê³  ê°±ì‹ 
         cacheUpdate(filepath);
 
         Reader reader = mapperCache.get(filepath);
         JSONObject mapper = (JSONObject) jsonParser.parse(reader);
 
         if (mapper.containsValue(value)) {
-            // Ã£¾Æ¿Â JSON ÆÄÀÏ¿¡ ´ëÇÑ key ÁıÇÕÀ» °¡Á®¿À±â
+            // ì°¾ì•„ì˜¨ JSON íŒŒì¼ì— ëŒ€í•œ key ì§‘í•©ì„ ê°€ì ¸ì˜¤ê¸°
             Iterator iterator = mapper.keySet().stream().iterator();
 
-            // key¿¡ ´ëÇØ value°¡ ³ª¿À´Â ±¸°£À» Ã£¾Æ ÇØ´ç key(code)¸¦ ¹İÈ¯ÇÏ±â
+            // keyì— ëŒ€í•´ valueê°€ ë‚˜ì˜¤ëŠ” êµ¬ê°„ì„ ì°¾ì•„ í•´ë‹¹ key(code)ë¥¼ ë°˜í™˜í•˜ê¸°
             while (iterator.hasNext()) {
                 String key = (String) iterator.next();
                 String found = (String) mapper.get(key);

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/fonation.iml" filepath="$PROJECT_DIR$/.idea/fonation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fonation.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fonation.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fonation.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fonation.test.iml" />
     </modules>
   </component>
 </project>

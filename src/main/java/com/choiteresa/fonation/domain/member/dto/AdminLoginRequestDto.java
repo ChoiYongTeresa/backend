@@ -11,19 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class AdminLoginRequestDto {
-    private String userId;
+    private String memberId;
     private String password;
-
-//    public Member toEntity(Role role){
-//        return Member.builder()
-//                .userId(this.userId)
-//                .password(this.password)
-//                .email(this.email)
-//                .userName(this.userName)
-//                .phoneNumber(this.phoneNumber)
-//                .address(this.address)
-//                .role(role)
-//                .build();
-//    }
 
 }
