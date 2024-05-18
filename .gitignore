@@ -1,2 +1,4 @@
 application.yaml
 resources
+.gradle
+.idea
