@@ -2,6 +2,7 @@ package com.choiteresa.fonation.domain.foodmarket.entity;
 
 
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDto;
+import com.choiteresa.fonation.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class FoodMarket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Integer id;
+    public Long id;
 
     @Column
     public String code;
@@ -52,6 +53,10 @@ public class FoodMarket {
     @Column(precision =16, scale = 13)
     public BigDecimal latitude;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    public Member admin;
+
     public FetchFoodMarketResponseDto toDto(){
         return FetchFoodMarketResponseDto.builder().
                 id(id).
@@ -60,5 +65,4 @@ public class FoodMarket {
                 address(address).
                 detailAddress(detailAddress).build();
     }
-
 }

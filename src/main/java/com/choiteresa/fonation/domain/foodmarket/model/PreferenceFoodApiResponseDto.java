@@ -10,7 +10,6 @@ import lombok.ToString;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @ToString
 public class PreferenceFoodApiResponseDto {
-    ResponseFrame response;
+    PreferenceFoodResponseFrame response;
 
     public List<PreferenceFoodResponseDto> getPreferenceFoodList(){
         FoodMarketCodeMapper foodMarketCodeMapper = new FoodMarketCodeMapper();
@@ -49,16 +48,16 @@ public class PreferenceFoodApiResponseDto {
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-class ResponseFrame{
-    HeaderFrame header;
-    BodyFrame body;
+class PreferenceFoodResponseFrame{
+    PreferenceFoodHeaderFrame header;
+    PreferenceFoodBodyFrame body;
 }
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-class HeaderFrame {
+class PreferenceFoodHeaderFrame {
     String resultCode;
     String resultMsg;
 }
@@ -67,9 +66,9 @@ class HeaderFrame {
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-class BodyFrame {
+class PreferenceFoodBodyFrame {
     String dataType;
-    List<ItemFrame> items;
+    List<PreferenceFoodItemFrame> items;
     Integer pageNo;
     Integer numOfRows;
     Integer totalCount;
@@ -79,7 +78,7 @@ class BodyFrame {
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-class ItemFrame{
+class PreferenceFoodItemFrame {
     String areaCd;
     String unitySignguCd;
     String spctrCd;

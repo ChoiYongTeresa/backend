@@ -10,17 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +23,18 @@ public class FoodMarketService {
 
     @Value("${OPEN_API_KEY}")
     private String SERVICE_KEY;
-    private FoodMarketCodeMapper codeMapper = new FoodMarketCodeMapper();
+    private final FoodMarketCodeMapper codeMapper = new FoodMarketCodeMapper();
     private final FoodMarketRepository foodMarketRepository;
+    private final ProductScoreStatistics productScoreStatistics;
+
+    // TODO: 생성자 예외처리 코드 작성 관련해서 더 좋은 방법이 없을까?
+    {
+        try {
+            productScoreStatistics = new ProductScoreStatistics();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public FoodMarket fetchFoodMarketById(int id){
         return foodMarketRepository.findById(id).orElseThrow(()->new RuntimeException("not found"));
@@ -186,7 +190,7 @@ public class FoodMarketService {
 
 
     public List<PreferenceFoodResponseDto> fetchFoodMarketPreferenceByOpenApi(String foodName, String address) throws IOException, ParseException {
-        // TODO: 선호물풍통계 API 사용해서 현황을 Response DTO로 가져오기
+        // 선호물풍통계 API 사용해서 현황을 Response DTO로 가져오기
         PreferenceFoodApiRequestDto requestDto =
                 PreferenceFoodApiRequestDto.builder().
                         serviceKey(SERVICE_KEY).
@@ -205,11 +209,88 @@ public class FoodMarketService {
         String url = "https://openapi.foodbank1377.org/foodBankInfoService/getPreferInfo"+params;
 
         PreferenceFoodApiResponseDto apiResponseDto = new RestTemplate().getForObject(
-                        url,
-                        PreferenceFoodApiResponseDto.class);
+                url,
+                PreferenceFoodApiResponseDto.class);
 
 
         return apiResponseDto.getPreferenceFoodList();
+    }
+
+    public void fetchProductStatusByOpenApi() throws IOException, ParseException {
+        // 선호물풍통계 API 사용해서 현황을 Response DTO로 가져오기
+        String[] areas = {"대전"};
+
+        // 각 지역의 푸드마켓 리스트를 조회
+        for (String area : areas){
+
+            // 해당 지역의 푸드마켓 리스트 가져오기
+            List<FoodMarket> foodMarketList = foodMarketRepository.findFoodMarketsByArea(area);
+
+            // 각 푸드마켓에서 적재중인 물품 현황을 얻어오기
+            for(FoodMarket foodMarket : foodMarketList){
+                int numOfRows = 20;
+                int limit;
+                int totalCount = 99999;
+
+                for(int pageNo=1; pageNo < totalCount;pageNo++){
+                    limit = pageNo * numOfRows; // 1 * 10 < 19, 2 * 10 > 19
+                    if (limit > totalCount)
+                        break;
+
+                    ProductStatusApiRequestDto requestDto =
+                            ProductStatusApiRequestDto.builder().
+                                    serviceKey(SERVICE_KEY).
+                                    numOfRows(String.valueOf(numOfRows)).
+                                    pageNo(String.valueOf(pageNo)).
+                                    dataType("json").
+                                    areaCd(codeMapper.convertValueToCode
+                                            (FoodMarketCodeMapperFilePath.AREA_CODE,foodMarket.getArea())).
+                                    spctrCd(foodMarket.getCode()).
+                                    build(); // 한 페이지 결과 수
+
+                    // 외부 선호물품통계 API 호출 후 데이터 받아오기
+                    // TODO: 응답을 받는 것에 대해 오류가 있다면 예외처리 해주기
+                    String params = requestDto.getParamString()+"&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY";
+                    String url = "https://openapi.foodbank1377.org/foodBankInfoService/getCnttgInfo"+params;
+
+                    ProductStatusApiResponseDto apiResponseDto = new RestTemplate().getForObject(
+                            url,
+                            ProductStatusApiResponseDto.class
+                    );
+
+                    // 한 푸드마켓에 대한 모든 물품류 리스트를 가져오기
+                    List<ProductStatusResponseDto> productStatusList =
+                            apiResponseDto.getProduectStatusList(foodMarket);
+
+                    // totalCount 설정하기
+                    totalCount = apiResponseDto.getTotalResultNum();
+
+                    // 각 물품에 대한 통계 내기
+                    for(ProductStatusResponseDto product : productStatusList){
+                        String itemClsNameLarge = product.getItemClassificationLarge();
+                        String itemClsNameMid = product.getItemClassificationMid();
+                        int score = product.getAmountOfProduct();
+
+                        // 대분류에 대한 점수 누적
+                        productScoreStatistics.updateProductLargeScoreByUnity
+                                (foodMarket.getArea(),foodMarket.getUnitySigngu(),itemClsNameLarge,score);
+
+                        // 소분류에 대한 점수 누적
+                        productScoreStatistics.updateProductMidScoreByUnity
+                                (foodMarket.getArea(),foodMarket.getUnitySigngu(),itemClsNameMid,score);
+                    }
+                }
+
+                // TODO: 점수 누적 이후의 로직 (일단 대분류만)
+
+                // 해당 지역의 시군구별 점수 현황을 가져옴
+                // 해당 지역의 시군구 별 스코어 현황 가져옴 ex. [유성구, (["가공식품",0].["유제품", 10])]
+                HashMap<String,HashMap<String, Integer>>  unityScore =
+                        productScoreStatistics.getUnityTotalScoreForLargeClassificationByArea(area);
+
+                // TODO: 위에거 그대로 믿고 Response DTO 만들고 반환
+            }
+        }
     }
 
     public boolean isFoodMarket(String centerCode){
