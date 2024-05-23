@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import java.math.BigDecimal;
 
 public interface FoodMarketWithDistance {
-    Integer getId();
+    Long getId();
     BigDecimal getLatitude();
     BigDecimal getLongitude();
     BigDecimal getDistance();

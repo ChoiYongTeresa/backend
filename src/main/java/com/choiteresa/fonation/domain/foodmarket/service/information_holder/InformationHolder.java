@@ -3,9 +3,7 @@ package com.choiteresa.fonation.domain.foodmarket.service.information_holder;
 import org.json.simple.parser.JSONParser;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.HashMap;
 
 public class InformationHolder {
@@ -13,8 +11,11 @@ public class InformationHolder {
     protected HashMap<String, Reader> mapperCache = new HashMap<>();
 
     void cacheUpdate(String filepath) throws IOException {
-        // Ä³½Ã°¡ ¾ø´Â Reader ¶ó¸é ClassPathResource¸¦ °¡Á®¿À°í °»½Å
-        FileReader fileReader = new FileReader(new ClassPathResource(filepath).getFile());
-        mapperCache.put(filepath, fileReader);
+        // ìºì‹œê°€ ì—†ëŠ” Reader ë¼ë©´ ClassPathResourceë¥¼ ê°€ì ¸ì˜¤ê³  ê°±ì‹ 
+        FileInputStream fileReader = new FileInputStream(new ClassPathResource(filepath).getFile());
+        InputStreamReader inputStreamReader =new InputStreamReader(fileReader,"UTF-8");
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+
+        mapperCache.put(filepath, reader);
     }
 }

@@ -4,6 +4,7 @@ package com.choiteresa.fonation.domain.foodmarket.controller;
 import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketRequestDto;
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDto;
+import com.choiteresa.fonation.domain.foodmarket.model.ProductStatusForGraphResponseDto;
 import com.choiteresa.fonation.domain.foodmarket.service.FoodMarketService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -19,7 +20,6 @@ import java.util.List;
 public class FoodMarketController {
 
     private final FoodMarketService foodMarketService;
-
 
     @GetMapping("/{marketId}")
     public ResponseEntity fetchFoodMarket(@PathVariable Integer marketId){
@@ -39,6 +39,18 @@ public class FoodMarketController {
                 foodMarketService.fetchNearbyFoodMarketsSorted(dto);
 
         return  ResponseEntity.ok().body(fetchFoodMarketResponseDtoList);
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity fetchAreaProductStatusPerUnity(@RequestParam String area) throws IOException, ParseException {
+        if(!area.equals("대전")){
+            return ResponseEntity.notFound().build();
+        }
+
+        List<ProductStatusForGraphResponseDto> responseDto =
+                foodMarketService.fetchProductStatusForGraph(area);
+
+        return ResponseEntity.ok().body(responseDto);
     }
 }
 

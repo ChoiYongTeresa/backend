@@ -1,5 +1,8 @@
 package com.choiteresa.fonation.domain.foodmarket.service.information_holder;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -8,10 +11,12 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+@Slf4j
 public class AreaInformationHolder extends InformationHolder{
 
-    private HashMap<String, ArrayList<String>> areaTreeStructure = new HashMap<>();
+    private ArrayList<AreaWithUnity> areaWithUnityList = new ArrayList<>();
     private final String AREA_FILE_NAME = "area.json";
 
 
@@ -23,28 +28,36 @@ public class AreaInformationHolder extends InformationHolder{
         cacheUpdate(AREA_FILE_NAME);
         Reader reader = mapperCache.get(AREA_FILE_NAME);
 
-        // Áö¿ªÀ» °®°í ÀÖ´Â ¹è¿­
+        // ì§€ì—­ì„ ê°–ê³  ìˆëŠ” ë°°ì—´
         JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
 
-        // Áö¿ª Á¤º¸ °¡Á®¿À±â
-        JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+        for (Object object : jsonArray){
+            // ì§€ì—­ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+            JSONObject jsonObject = (JSONObject) object;
 
-        // Áö¿ª Á¤º¸ ¹× ½Ã±º±¸ Array
-        String area = (String)jsonObject.get("area");
-        JSONArray unitysignguArray = (JSONArray)jsonObject.get("unitysigngu");
+            // ì§€ì—­ ì •ë³´ ë° ì‹œêµ°êµ¬ Array
+            String area = (String)jsonObject.get("area");
+            JSONArray unitysignguArray = (JSONArray)jsonObject.get("unitySigngu");
 
-        // Áö¿ªÁ¤º¸ ÀúÀå
-        areaTreeStructure.put(area, new ArrayList<>());
-
-        // ½Ã±º±¸ Á¤º¸ ¼øÈ¸ ÈÄ ÇØ½Ã¸Ê¿¡ ÀúÀå
-        unitysignguArray.forEach(object -> areaTreeStructure.get(area).add((String)object));
+            log.info("area: {}",area);
+            // ì§€ì—­ì •ë³´ ì €ì¥
+            areaWithUnityList.add(new AreaWithUnity(area,new ArrayList<>(unitysignguArray)));
+        }
     }
 
-    public ArrayList<String> getAreaList(){
-        return new ArrayList<>(areaTreeStructure.keySet());
+    public List<String> getAreaList(){
+        return areaWithUnityList.stream().map(object->object.getArea()).toList();
     }
 
-    public ArrayList<String> getUnitySignguListByArea(String area){
-        return areaTreeStructure.get(area);
+    public ArrayList<String> getUnityByArea(String area){
+        return areaWithUnityList.stream().filter(object->object.getArea().equals(area))
+                .findFirst().orElseThrow(()->new RuntimeException("not found: "+area)).getUnityList();
     }
+}
+
+@Getter
+@AllArgsConstructor
+class AreaWithUnity{
+    String area;
+    ArrayList<String> unityList;
 }

@@ -15,5 +15,5 @@ public class ProductStatusResponseDto {
     String itemClassificationLarge; // 물품종대분류
     String itemClassificationMid; // 물품종중분류
     Integer amountOfProduct; // 물품 갯수
-    Integer amountOfMoney; // 기부 받은 금액
+    String amountOfMoney; // 기부 받은 금액
 }

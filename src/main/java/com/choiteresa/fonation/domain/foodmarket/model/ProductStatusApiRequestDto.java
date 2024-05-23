@@ -11,6 +11,7 @@ import lombok.*;
 public class ProductStatusApiRequestDto {
     String serviceKey; // 인증키
     String numOfRows; // 한 페이지 결과 수
+    String stdrYm; // 년도
     String pageNo; // 페이지 번호
     String dataType; // 응답자료형식
     String areaCd; // 지역 코드
@@ -22,7 +23,9 @@ public class ProductStatusApiRequestDto {
         return "?serviceKey=" + getServiceKey() +
                 "&numOfRows=" + getNumOfRows() +
                 "&pageNo=" + getPageNo() +
+                "&stdrYm=" + getStdrYm() +
                 "&dataType=" + getDataType() +
-                "&areaCd=" + getAreaCd();
+                "&areaCd=" + getAreaCd() +
+                "&spctrCd=" + getSpctrCd();
     }
 }

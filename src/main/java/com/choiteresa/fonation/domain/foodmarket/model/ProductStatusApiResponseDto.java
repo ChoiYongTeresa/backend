@@ -42,7 +42,7 @@ public class ProductStatusApiResponseDto {
                                         FoodMarketCodeMapperFilePath.PRODUCT_MID_CLASSIFICATION_CODE,
                                                 itemFrame.getCnttgMlsfcCd()))
                                 .amountOfProduct(Integer.parseInt(itemFrame.getCnttgQy()))
-                                .amountOfMoney(Integer.parseInt(itemFrame.getAcntbkAmt()))
+                                .amountOfMoney(itemFrame.getAcntbkAmt())
                                 .build();
                     } catch (IOException | ParseException e) {
                         throw new RuntimeException(e);
