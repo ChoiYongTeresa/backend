@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FetchFoodMarketResponseDto {
-    Integer id;
+    Long id;
     Integer rank;
     String foodMarketName;
     String phoneNumber;
