@@ -28,17 +28,9 @@ public class FoodMarketService {
     @Value("${OPEN_API_KEY}")
     private String SERVICE_KEY;
     private FoodMarketCodeMapper codeMapper = new FoodMarketCodeMapper();
-    private final FoodMarketRepository foodMarketRepository;
-    private ProductScoreStatistics productScoreStatistics;
+    private ProductScoreStatistics productScoreStatistics = new ProductScoreStatistics();
 
-    // TODO: 생성자 예외처리 코드 작성 관련해서 더 좋은 방법이 없을까?
-    {
-        try {
-            productScoreStatistics = new ProductScoreStatistics();
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private final FoodMarketRepository foodMarketRepository;
 
     public FoodMarket fetchFoodMarketById(int id) {
         return foodMarketRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
@@ -55,15 +47,11 @@ public class FoodMarketService {
         );
 
         if (responseDto == null)
-            throw new RuntimeException("responseDto not found ");
+            throw new RuntimeException("responseDto not found");
 
         // API로 얻어온 푸드마켓 정보를 Entity로 변환
-        List<FoodMarket> entityList = new ArrayList<>();
-
-        for (FoodMarketResponseDto foodMarketResponseDto : responseDto.getItems()) {
-            FoodMarket entity = foodMarketResponseDto.toEntity();
-            entityList.add(entity);
-        }
+        List<FoodMarket> entityList =
+                responseDto.getItems().stream().map(FoodMarketResponseDto::toEntity).toList();
 
         return foodMarketRepository.saveAll(entityList);
     }

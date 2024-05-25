@@ -23,7 +23,7 @@ public class ProductScoreStatistics {
     private ProductClassificationInformationHolder productClassificationInformationHolder
             = new ProductClassificationInformationHolder();
 
-    public ProductScoreStatistics() throws IOException, ParseException {
+    public ProductScoreStatistics() {
         init();
     }
 

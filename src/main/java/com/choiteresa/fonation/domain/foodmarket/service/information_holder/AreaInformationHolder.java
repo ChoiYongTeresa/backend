@@ -20,16 +20,21 @@ public class AreaInformationHolder extends InformationHolder{
     private final String AREA_FILE_NAME = "area.json";
 
 
-    public AreaInformationHolder() throws IOException, ParseException {
+    public AreaInformationHolder(){
         init();
     }
 
-    private void init() throws IOException, ParseException {
+    private void init() {
         cacheUpdate(AREA_FILE_NAME);
         Reader reader = mapperCache.get(AREA_FILE_NAME);
 
         // 지역을 갖고 있는 배열
-        JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = (JSONArray) jsonParser.parse(reader);
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         for (Object object : jsonArray){
             // 지역 정보 가져오기

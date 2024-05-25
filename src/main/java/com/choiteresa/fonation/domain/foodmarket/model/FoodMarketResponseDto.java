@@ -26,9 +26,11 @@ public class FoodMarketResponseDto{
     String longitude;
     String latitude;
 
-    public FoodMarket toEntity() throws IOException, ParseException {
+    public FoodMarket toEntity() {
         FoodMarketCodeMapper codeMapper = new FoodMarketCodeMapper();
-        String centerCdoe = codeMapper.convertValueToCode(FoodMarketCodeMapperFilePath.FOOD_MARKET_CODE,name);
+
+        String centerCdoe =
+                codeMapper.convertValueToCode(FoodMarketCodeMapperFilePath.FOOD_MARKET_CODE,name);
 
         return FoodMarket.builder().
                 name(name).

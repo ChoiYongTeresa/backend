@@ -18,7 +18,7 @@ public class ProductClassificationInformationHolder extends InformationHolder {
     private final String MID_CLASSIFICATION_FILE_NAME;
     private final String LARGE_CLASSIFICATION_FILE_NAME;
 
-    public ProductClassificationInformationHolder() throws IOException, ParseException {
+    public ProductClassificationInformationHolder() {
         MID_CLASSIFICATION_FILE_NAME = FoodMarketCodeMapperFilePath.PRODUCT_MID_CLASSIFICATION_CODE.getPath();
         LARGE_CLASSIFICATION_FILE_NAME = FoodMarketCodeMapperFilePath.PRODUCT_LARGE_CLASSIFICATION_CODE.getPath();
 
@@ -26,12 +26,17 @@ public class ProductClassificationInformationHolder extends InformationHolder {
         init(LARGE_CLASSIFICATION_FILE_NAME);
     }
 
-    private void init(String filePath) throws IOException, ParseException {
+    private void init(String filePath){
         cacheUpdate(filePath);
         Reader reader = mapperCache.get(filePath);
 
         // 분류 물품 불러오기
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject) jsonParser.parse(reader);
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         // 파일 경로에 따라 모든 분류물품 저장하기
         if(filePath.equals(MID_CLASSIFICATION_FILE_NAME)){
