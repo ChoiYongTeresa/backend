@@ -21,17 +21,24 @@ public class Product {
     @JoinColumn(name = "relation_id")
     private FoodmarketProductRelation relation;
 
+    @Column(nullable = false)
     private Date expireDate;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
     private int storeType;
 
+    @Column(nullable = false)
     private String category;
 
+    @Column(nullable = false)
     private int weight;
 
+    @Column(nullable = false)
     private boolean isSelected;
 }
