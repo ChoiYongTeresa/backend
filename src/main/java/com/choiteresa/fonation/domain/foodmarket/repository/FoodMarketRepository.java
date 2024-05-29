@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 public interface FoodMarketRepository extends JpaRepository<FoodMarket,Integer> {
     List<FoodMarket> findFoodMarketsByArea(String area);
+    Optional<FoodMarket> findById(Long id);
     Optional<FoodMarket> findByNameContaining(String name);
 
     Optional<FoodMarket> findByCode(String code);

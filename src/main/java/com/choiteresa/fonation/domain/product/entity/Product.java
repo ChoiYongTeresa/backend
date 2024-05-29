@@ -19,7 +19,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "relation_id")
-    private FoodmarketProductRelation relationId;
+    private FoodmarketProductRelation relation;
 
     @Column(nullable = false)
     private Date expireDate;

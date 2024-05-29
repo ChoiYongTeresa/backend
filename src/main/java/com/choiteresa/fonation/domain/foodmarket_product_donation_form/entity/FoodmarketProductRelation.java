@@ -13,6 +13,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Table(name = "foodmarket_product_relation")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodmarketProductRelation {
@@ -20,16 +21,16 @@ public class FoodmarketProductRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Integer id;
+    public Long id;
 
     // FPR many : donation_form one
     @JoinColumn(name = "donation_form_id")
     @ManyToOne
-    public ProductDonationForm donationFormId;
+    public ProductDonationForm donationForm;
 
     @ManyToOne
     @JoinColumn(name = "foodmarket_id")
-    public FoodMarket foodMarketId;
+    public FoodMarket foodMarket;
 
     private Date selectedDate;
 }
