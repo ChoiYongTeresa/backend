@@ -1,5 +1,7 @@
 package com.choiteresa.fonation.domain.foodmarket_product_donation_form.controller;
 
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.MarketSelectionRequestDto;
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.MarketSelectionResponseDto;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.SelectedProductResponseDto;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.SelectedProductRequestDto;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
@@ -20,9 +22,15 @@ public class FPController {
 
     @GetMapping("/selected_info")
     @ResponseBody
-    public ResponseEntity<List> getSelectedProducts (@RequestBody SelectedProductRequestDto listRequest){
+    public ResponseEntity<List<SelectedProductResponseDto>> getSelectedProducts (@RequestBody SelectedProductRequestDto listRequest){
         List<FoodmarketProductRelation> relations = FPService.findFPRelation(listRequest);
         List<SelectedProductResponseDto> listResponse = FPService.findSelectedProductList(relations);
         return ResponseEntity.ok(listResponse);
+    }
+
+    @PostMapping("selection/{foodmarket_id}")
+    @ResponseBody
+    public ResponseEntity<MarketSelectionResponseDto> selectMarket (@RequestBody MarketSelectionRequestDto selectRequest){
+        return ResponseEntity.ok(FPService.selectMarket(selectRequest));
     }
 }

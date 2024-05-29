@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface FPRepository extends JpaRepository<FoodmarketProductRelation,Long> {
 
     Optional<List<FoodmarketProductRelation>> findByDonationForm(ProductDonationForm donationForm);
+    Optional<FoodmarketProductRelation> findByFoodMarketIdAndDonationFormId(Long foodMarketId, Long donationFormId);
 }
