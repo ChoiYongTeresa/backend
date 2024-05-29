@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+@Setter
+@Getter
 @Entity
 @Getter
 @Setter
@@ -28,5 +32,13 @@ public class ProductDonationForm {
     @Column(nullable = false)
     private boolean isSelected;
 
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
+
+    public void setIsSelected(boolean b) {
+        isSelected = b;
+    }
 }
+
