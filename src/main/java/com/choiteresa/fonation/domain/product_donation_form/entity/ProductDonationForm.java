@@ -9,8 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
 @Entity
 @Getter
 @Setter
