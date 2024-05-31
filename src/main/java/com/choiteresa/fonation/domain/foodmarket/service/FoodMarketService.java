@@ -223,4 +223,14 @@ public class FoodMarketService {
 
         return "대전";
     }
+
+    @Transactional
+    public FoodMarket banProduct(Integer foodMarketId, String prohibitedItem){
+        // TODO: 금지 물품 등록
+        // TODO: 금지 물품을 등록하고, 해당 푸드마켓 정보를 반환
+        FoodMarket foodMarket = foodMarketRepository.findById(foodMarketId)
+                .orElseThrow(() -> new IllegalArgumentException("FoodMarket not found"));
+        foodMarket.setProhibitedItem(prohibitedItem);
+        return foodMarketRepository.save(foodMarket);
+    }
 }
