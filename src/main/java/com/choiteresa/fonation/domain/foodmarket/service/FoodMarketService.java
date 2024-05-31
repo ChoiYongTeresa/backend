@@ -6,21 +6,22 @@ import com.choiteresa.fonation.domain.foodmarket.model.*;
 import com.choiteresa.fonation.domain.foodmarket.repository.FoodMarketRepository;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketCodeMapperFilePath;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketSortType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
