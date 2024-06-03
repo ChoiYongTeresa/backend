@@ -19,7 +19,7 @@ public class SelectedProductDto {
     private int productQuantity;
     private int storeType;
     private Date expireDate;
-    private boolean isSelected;
+    private int isSelected;
 
 
     public static SelectedProductDto fromEntity(Product product){
@@ -30,7 +30,7 @@ public class SelectedProductDto {
                 .productQuantity(product.getQuantity())
                 .storeType(product.getStoreType())
                 .expireDate(product.getExpireDate())
-                .isSelected(product.isSelected())
+                .isSelected(product.getIsSelected())
                 .build();
     }
 }
