@@ -7,10 +7,12 @@ import lombok.Getter;
 @Builder
 public class AdminLoginResponseDto {
     private int status;
+    private Long foodmarketId;
 
-    public static AdminLoginResponseDto fromEntity(int status) {
+    public static AdminLoginResponseDto fromEntity(int status, Long foodmarketId) {
         return AdminLoginResponseDto.builder()
                 .status(status)
+                .foodmarketId(foodmarketId)
                 .build();
     }
 }

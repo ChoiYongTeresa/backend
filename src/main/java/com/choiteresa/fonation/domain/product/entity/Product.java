@@ -40,5 +40,5 @@ public class Product {
     private int weight;
 
     @Column(nullable = false)
-    private boolean isSelected;
+    private int isSelected;
 }
