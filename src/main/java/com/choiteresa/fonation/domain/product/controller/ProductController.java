@@ -10,13 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/donations")
+@RequestMapping("/donations/product")
 public class ProductController {
-    @Autowired
+
     private ProductService productService;
 
-    @PostMapping("/submit")
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @PostMapping("/donationForm")
     public ResponseEntity<ProductDonationForm> submitDonationForm(@RequestBody ProductDonationForm form) {
+        // TODO : donationForm을 제출하는 API
         ProductDonationForm savedForm = productService.submitDonationForm(form);
         return ResponseEntity.ok(savedForm);
     }
