@@ -1,4 +1,4 @@
-//package com.choiteresa.fonation.domain.foodmarket.controller;
+package com.choiteresa.fonation.domain.foodmarket.controller;//package com.choiteresa.fonation.domain.foodmarket.controller;
 //
 //
 //import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
@@ -44,3 +44,27 @@
 //}
 //
 //
+
+import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDto;
+import com.choiteresa.fonation.domain.foodmarket.model.UpdateProhibitedItemRequest;
+import com.choiteresa.fonation.domain.foodmarket.service.FoodMarketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/foodmarkets")
+public class FoodMarketController {
+    private final FoodMarketService foodMarketService;
+
+    @Autowired
+    public FoodMarketController(FoodMarketService foodMarketService) {
+        this.foodMarketService = foodMarketService;
+    }
+
+    @PostMapping("admin/donations/{id}/banned_product")
+    public ResponseEntity<FetchFoodMarketResponseDto> updateProhibitedItem(@PathVariable Integer id, @RequestBody UpdateProhibitedItemRequest request) {
+        FetchFoodMarketResponseDto updatedFoodMarket = foodMarketService.updateProhibitedItem(id, request.getProhibitedItem());
+        return ResponseEntity.ok(updatedFoodMarket);
+    }
+}

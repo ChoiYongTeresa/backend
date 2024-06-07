@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
-import java.util.*;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,6 +32,14 @@ public class FoodMarketService {
 
     public FoodMarket fetchFoodMarketById(int id){
         return foodMarketRepository.findById(id).orElseThrow(()->new RuntimeException("not found"));
+    }
+    @Transactional
+    public FetchFoodMarketResponseDto updateProhibitedItem(Integer id, String prohibitedItem) {
+        // 금지 물품을 업데이트하고, 업데이트된 푸드마켓 정보를 반환
+        FoodMarket foodMarket = foodMarketRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("FoodMarket not found"));
+        foodMarket.setProhibitedItem(prohibitedItem);
+        foodMarketRepository.save(foodMarket);
+        return foodMarket.toDto();
     }
     public List<FoodMarket> saveFoodMarketFromRemoteConfig() throws IOException, ParseException {
         // Python 서버에서 푸드마켓에 대한 정보를 요청
