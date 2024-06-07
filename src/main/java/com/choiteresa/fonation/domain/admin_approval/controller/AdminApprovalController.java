@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("admin/donations")
 public class AdminApprovalController {
@@ -24,20 +22,20 @@ public class AdminApprovalController {
 //
 //        }
 //    }
-    @GetMapping("/admin/donations/requestList")
-    public ResponseEntity<List<ProductDonationForm>> listWaitingForms() {
-        return ResponseEntity.ok(productDonationService.getAllWaitingForms());
+//    @GetMapping("/admin/donations/requestList")
+//    public ResponseEntity<List<ProductDonationForm>> listWaitingForms() {
+//        return ResponseEntity.ok(productDonationService.getAllWaitingForms());
+//    }
+
+//     ê¸°ë¶€ ì‹ ì²­ì„œ í™•ì¸
+    @GetMapping("/admin/donations/{donationId}")
+    public ResponseEntity<ProductDonationForm> getForm(@PathVariable Long id) {
+        return ResponseEntity.ok(productDonationService.getForm(id));
     }
 
-    // ±âºÎ ½ÅÃ»¼­ È®ÀÎ
-//    @GetMapping("/admin/donations/{donationId}")
-//    public ResponseEntity<ProductDonationForm> getForm(@PathVariable Long id) {
-//        return ResponseEntity.ok(productDonationService.getForm(id));
-//    }
-//
-//    // ¼ö¿ë ºÒ°¡ ¹°Ç° µî·Ï (Foodmarket¿¡ bannedProduct¿¡ µî·Ï)
+//    // ìˆ˜ìš© ë¶ˆê°€ ë¬¼í’ˆ ë“±ë¡ (Foodmarketì— bannedProductì— ë“±ë¡)
 //    @PostMapping("admin/donations/{foodmarketId}/banned_product") {
-//    public ResponseEntity<ProductDonationForm> banProduct(@PathVariable Integer id) {
+//    public ResponseEntity<ProductDonationForm> banProduct(@PathVariable Long id) {
 //        return ResponseEntity.ok(productDonationService.banProduct(id));
 //    }
 //
