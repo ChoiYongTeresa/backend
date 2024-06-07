@@ -1,7 +1,10 @@
 package com.choiteresa.fonation.domain.product.repository;
 
+import com.choiteresa.fonation.domain.product.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+//    List<Product> findByProductCategory(int category);
 }

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProductDonationRepository extends JpaRepository<ProductDonationForm, Long> {
     List<ProductDonationForm> findByStatus(String status);
-
+//    List<ProductDonationForm> findById (Long id);
 }
