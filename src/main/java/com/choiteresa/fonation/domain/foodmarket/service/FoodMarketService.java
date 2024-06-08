@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -74,9 +75,36 @@ public class FoodMarketService {
         // 최종적으로 지역 내 푸드마켓 정보 리스트 반환
         return switch (sortType) {
             case DEFAULT -> defaultFoodMarketListDto;
-            case NEAREST -> sortByDistance(address);
+            case NEAREST -> sortByDistance(dto.getLatitude(),dto.getLongitude());
             case NESSASARY -> sortByPreference(foodList, address);
         };
+    }
+
+    public List<FetchFoodMarketResponseDto> sortByDistance(BigDecimal latitude, BigDecimal longitude) {
+        // 정렬방법 1 -> 현재 위치 정보와 근처의 푸드마켓과의 거리를 계산 후 내림차 순 정렬
+
+        // 지역 정보 가져오기
+        String area = convertLocationsToArea(latitude,longitude);
+        log.info("target: ({},{})",latitude, longitude);
+
+        // 현재 지역(대전) 내의 푸드마켓 리스트에 대한 거리를 구한 후 FoodMarketWithDistance 리스트로 가져오고, 거리를 내림차 순으로 정렬
+        List<FoodMarketWithDistance> queryResult =
+                foodMarketRepository.findFoodMarketInArea(longitude, latitude, area);
+
+        List<FetchFoodMarketResponseDto> sortedFoodMarketListByDistance =
+                queryResult.stream().sorted((Comparator.comparing(FoodMarketWithDistance::getDistance)))
+                        .map(FoodMarketWithDistance::toDto)
+                        .toList();
+
+        // 각 랭크 정보 기입하기
+        for (int rank = 1; rank < sortedFoodMarketListByDistance.size() + 1; rank++) {
+            sortedFoodMarketListByDistance.get(rank - 1).setRank(rank);
+        }
+        queryResult.forEach(
+                item -> log.info("{},({},{}) Distance : {}",
+                        item.getName(), item.getLongitude(), item.getLatitude(), item.getDistance()));
+
+        return sortedFoodMarketListByDistance;
     }
 
     public List<FetchFoodMarketResponseDto> sortByDistance(String address) {
@@ -91,6 +119,7 @@ public class FoodMarketService {
 
         // 지역 정보 가져오기
         String area = convertAddressToArea(address);
+        log.info("target: ({},{})", responseDto.getLongitude(), responseDto.getLatitude());
         log.info("target: ({},{})", responseDto.getLongitude(), responseDto.getLatitude());
 
         // 현재 지역(대전) 내의 푸드마켓 리스트에 대한 거리를 구한 후 FoodMarketWithDistance 리스트로 가져오고, 거리를 내림차 순으로 정렬
@@ -329,4 +358,12 @@ public class FoodMarketService {
 
         return "대전";
     }
+
+    public String convertLocationsToArea(BigDecimal latitude, BigDecimal longitude) {
+        // TODO: 일치하는 정도 구하기
+        // TODO: 위치 정보를 기반으로 지역 정보 쿼리하기, 지금은 딱히 방법이 안떠오름
+
+        return "대전";
+    }
+
 }
