@@ -1,24 +1,39 @@
 package com.choiteresa.fonation.domain.attachment.entity;
-
+import com.choiteresa.fonation.domain.member.entity.Member;
 import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Attachment {
-    // id donation_form_id type form
     @Id
-    @GeneratedValue
-    @Column(nullable = false, unique = true)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    public Long id;
 
-    // donation_form_id = one , attachment = many
+    @Column
+    public String type;
+
+    @Column
+    public String path;
+
     @ManyToOne
-    @JoinColumn(name = "donation_form_id")
-    private ProductDonationForm donationFormId;
+    @JoinColumn(referencedColumnName = "id")
+    public ProductDonationForm form;
 
-    @Column(nullable = false)
-    private int type;
+    public String getFilename(){
+        String[] args = path.split("/");
+        return args[args.length-1];
+    }
 
-    @Column(nullable = false)
-    private String form;
+    public void setForm(ProductDonationForm form){
+        this.form = form;
+    }
 }
