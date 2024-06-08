@@ -22,24 +22,24 @@ public class MemberController {
     @ResponseBody
     public ResponseEntity<UserRegisterResponseDto> registerUser(@RequestBody UserRegisterRequestDto memberDto){
         return ResponseEntity.ok(
-                UserRegisterResponseDto.fromEntity(memberService.registerUserMember(memberDto)));
+                memberService.registerUserMember(memberDto));
     }
     @PostMapping("/register/admin")
     @ResponseBody
     public ResponseEntity<AdminRegisterResponseDto> registerAdmin(@RequestBody AdminRegisterRequestDto memberDto){
         return ResponseEntity.ok(
-                AdminRegisterResponseDto.fromEntity(memberService.registerAdminMember(memberDto)));
+                memberService.registerAdminMember(memberDto));
     }
 
     @PostMapping("/login/user")
     public ResponseEntity<UserLoginResponseDto> loginUser(@RequestBody UserLoginRequestDto loginRequest){
         return ResponseEntity.ok(
-                UserLoginResponseDto.fromEntity(memberService.loginUser(loginRequest)));
+                memberService.loginUser(loginRequest));
     }
     @PostMapping("/login/admin")
     public ResponseEntity<AdminLoginResponseDto> loginAdmin(@RequestBody AdminLoginRequestDto loginRequest){
         return ResponseEntity.ok(
-                AdminLoginResponseDto.fromEntity(memberService.loginAdmin(loginRequest)));
+                memberService.loginAdmin(loginRequest));
     }
     @GetMapping("/summary/{member_id}")
     public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@RequestBody SummaryRequestDto summaryRequest){

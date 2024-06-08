@@ -7,6 +7,7 @@ import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDt
 import com.choiteresa.fonation.domain.foodmarket.model.ProductStatusForGraphResponseDto;
 import com.choiteresa.fonation.domain.foodmarket.service.FoodMarketService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/donations/center")
+@Slf4j
 public class FoodMarketController {
 
     private final FoodMarketService foodMarketService;
@@ -33,10 +35,14 @@ public class FoodMarketController {
         return ResponseEntity.ok().body(foodMarkets);
     }
 
-    @GetMapping("/readAll")
+    @PostMapping("/readAll")
     public ResponseEntity fetchFoodMarketList(@RequestBody FetchFoodMarketRequestDto dto) throws IOException, ParseException, InterruptedException {
+        log.info("{}",dto);
+
         List<FetchFoodMarketResponseDto> fetchFoodMarketResponseDtoList =
                 foodMarketService.fetchNearbyFoodMarketsSorted(dto);
+
+        log.info("{}",fetchFoodMarketResponseDtoList);
 
         return  ResponseEntity.ok().body(fetchFoodMarketResponseDtoList);
     }
