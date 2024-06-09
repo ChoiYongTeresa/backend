@@ -1,7 +1,7 @@
 package com.choiteresa.fonation.domain.product_donation_form.entity;
 
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
-import com.choiteresa.fonation.domain.product.entity.Product;
+import com.choiteresa.fonation.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +19,10 @@ public class ProductDonationForm {
     private Long id;
 
     //User one : ProductDonationForm many
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member donationUserId;
-    private Long donationUserId;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member donationUserId;
+//    private Long donationUserId;
 
     @OneToMany(mappedBy = "productDonationForm")
     private List<FoodmarketProductRelation> relations;
@@ -37,7 +37,7 @@ public class ProductDonationForm {
 //    private LocalDateTime updatedAt;
     public ProductDonationForm() {
     }
-    public ProductDonationForm(Long donationUserId) {
+    public ProductDonationForm(Member donationUserId) {
         this.donationUserId = donationUserId;
     }
 
@@ -45,10 +45,7 @@ public class ProductDonationForm {
         isSelected = b;
     }
 
-    public void setProducts(List<Product> products) {
-        for (Product product : products) {
-            product.setDonationForm(this);
-        }
-    }
+
+
 }
 
