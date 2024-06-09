@@ -26,26 +26,23 @@ public class AdminApprovalController {
 //    public ResponseEntity<List<ProductDonationForm>> listWaitingForms() {
 //        return ResponseEntity.ok(productDonationService.getAllWaitingForms());
 //    }
-
-//     기부 신청서 확인
-    @GetMapping("/admin/donations/{donationId}")
+    @Autowired
+    public AdminApprovalController(ProductDonationService productDonationService) {
+        this.productDonationService = productDonationService;
+    }
+    @GetMapping("/{donationId}")
     public ResponseEntity<ProductDonationForm> getForm(@PathVariable Long id) {
+        // TODO : 도네이션 폼을 얻어오는 API
         return ResponseEntity.ok(productDonationService.getForm(id));
     }
+    @PostMapping("/{donationId}/approval")
+    public ResponseEntity<ProductDonationForm> approveForm(@PathVariable Long id) {
+        return ResponseEntity.ok(productDonationService.approveForm(id));
+    }
 
-//    // 수용 불가 물품 등록 (Foodmarket에 bannedProduct에 등록)
-//    @PostMapping("admin/donations/{foodmarketId}/banned_product") {
-//    public ResponseEntity<ProductDonationForm> banProduct(@PathVariable Long id) {
-//        return ResponseEntity.ok(productDonationService.banProduct(id));
-//    }
-//
-//    @PostMapping("/admin/donations/{donationId}/approval")
-//    public ResponseEntity<ProductDonationForm> approveForm(@PathVariable Long id) {
-//        return ResponseEntity.ok(productDonationService.approveForm(id));
-//    }
-//
-//    @PostMapping("/admin/donations/{donationId}/reject")
-//    public ResponseEntity<ProductDonationForm> rejectForm(@PathVariable Long id) {
-//        return ResponseEntity.ok(productDonationService.rejectForm(id));
-//    }
+    @PostMapping("/{donationId}/reject")
+    public ResponseEntity<ProductDonationForm> rejectForm(@PathVariable Long id) {
+
+        return ResponseEntity.ok(productDonationService.rejectForm(id));
+    }
 }
