@@ -62,7 +62,7 @@ public class FoodMarketController {
         this.foodMarketService = foodMarketService;
     }
 
-    @PostMapping("admin/donations/{id}/banned_product")
+    @PostMapping("admin/donations/{id}/bannedProduct")
     public ResponseEntity<FetchFoodMarketResponseDto> updateProhibitedItem(@PathVariable Integer id, @RequestBody UpdateProhibitedItemRequest request) {
         FetchFoodMarketResponseDto updatedFoodMarket = foodMarketService.updateProhibitedItem(id, request.getProhibitedItem());
         return ResponseEntity.ok(updatedFoodMarket);
