@@ -3,6 +3,7 @@ package com.choiteresa.fonation.domain.foodmarket.repository;
 
 import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.foodmarket.model.FoodMarketWithDistance;
+import com.choiteresa.fonation.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,8 @@ import java.util.Optional;
 @Repository
 public interface FoodMarketRepository extends JpaRepository<FoodMarket,Integer> {
     List<FoodMarket> findFoodMarketsByArea(String area);
+    Optional<FoodMarket> findById(Long id);
+    Optional<FoodMarket> findByAdmin(Member member);
     Optional<FoodMarket> findByNameContaining(String name);
 
     Optional<FoodMarket> findByCode(String code);

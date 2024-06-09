@@ -13,15 +13,23 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "foodmarket_product_relation")
+@NoArgsConstructor
 @AllArgsConstructor
 public class FoodmarketProductRelation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Integer id;
+    public Long id;
+
+
+    // FPR many : donation_form one
+    @JoinColumn(name = "donation_form_id")
+    @ManyToOne
+    public ProductDonationForm donationForm;
 
     @ManyToOne
-    @JoinColumn(name = "product_donation_form_id", nullable = false)
-    public ProductDonationForm productDonationForm;
+    @JoinColumn(name = "foodmarket_id")
+    public FoodMarket foodMarket;
 
     @OneToMany(mappedBy = "relation")
     private List<Product> products;
