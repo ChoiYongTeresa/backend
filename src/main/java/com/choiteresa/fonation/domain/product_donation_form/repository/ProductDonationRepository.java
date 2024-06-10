@@ -10,4 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ProductDonationRepository extends JpaRepository<ProductDonationForm,Long> {
     List<ProductDonationForm> findByStatus(String status);
+
     Optional<ProductDonationForm> findById(Long id);
+
+}

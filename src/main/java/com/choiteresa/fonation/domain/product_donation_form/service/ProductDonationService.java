@@ -33,7 +33,7 @@ public class ProductDonationService {
         Member member = memberRepository.findById(request.getDonationUserId().getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
         ProductDonationForm form = new ProductDonationForm();
-        form.setDonationUserId(member);
+        form.setDonationUser(member);
     }
     public ProductDonationForm submitDonationForm(ProductDonationForm form) {
         form.setStatus("WAITING");

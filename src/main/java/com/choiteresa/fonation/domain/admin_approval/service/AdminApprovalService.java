@@ -17,9 +17,9 @@ public class AdminApprovalService {
                 .flatMap(form -> form.getRelations().stream())
                 .flatMap(relation -> relation.getProducts().stream().map(product -> {
                     DonationRequestDto dto = new DonationRequestDto();
-                    dto.setName(relation.getProductDonationForm().getDonationUserId().getMemberName());
-                    dto.setPhone(relation.getProductDonationForm().getDonationUserId().getPhoneNumber());
-                    dto.setEmail(relation.getProductDonationForm().getDonationUserId().getEmail());
+                    dto.setName(relation.getDonationForm().getDonationUser().getMemberName());
+                    dto.setPhone(relation.getDonationForm().getDonationUser().getPhoneNumber());
+                    dto.setEmail(relation.getDonationForm().getDonationUser().getEmail());
                     dto.setProductCategory(product.getCategory());
                     dto.setProductName(product.getName());
                     dto.setProductNum(product.getQuantity());

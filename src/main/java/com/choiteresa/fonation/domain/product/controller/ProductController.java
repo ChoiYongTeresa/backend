@@ -22,7 +22,7 @@ public class ProductController {
 
     @PostMapping("/donationForm")
     public ResponseEntity<ProductDonationForm> submitDonationForm(@RequestBody ProductDonationForm form) {
-        // TODO : donationFormÀ» Á¦ÃâÇÏ´Â API
+        // TODO : donationFormì„ ì œì¶œí•˜ëŠ” API
         ProductDonationForm savedForm = productService.submitDonationForm(form);
         return ResponseEntity.ok(savedForm);
     }

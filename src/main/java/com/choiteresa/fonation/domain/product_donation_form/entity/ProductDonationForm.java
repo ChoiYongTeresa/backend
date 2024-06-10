@@ -28,7 +28,7 @@ public class ProductDonationForm {
     @JoinColumn(name = "member_id")
     private Member donationUser; // donationUserId였는데 변경됨.
 
-    @OneToMany(mappedBy = "productDonationForm")
+    @OneToMany(mappedBy = "donationForm")
     private List<FoodmarketProductRelation> relations;
 
 
@@ -40,10 +40,9 @@ public class ProductDonationForm {
 //    private LocalDateTime createdAt;
 //
 //    private LocalDateTime updatedAt;
-    public ProductDonationForm() {
-    }
+
     public ProductDonationForm(Member donationUserId) {
-        this.donationUserId = donationUserId;
+        this.donationUser = donationUserId;
     }
 
     public void setIsSelected(boolean b) {

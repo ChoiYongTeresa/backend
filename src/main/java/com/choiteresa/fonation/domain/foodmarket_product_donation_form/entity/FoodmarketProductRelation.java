@@ -1,10 +1,12 @@
 package com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity;
 
+import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.product.entity.Product;
 import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -36,10 +38,8 @@ public class FoodmarketProductRelation {
     private Long foodMarketId;  // 이름 변경
     private Date selectedDate;
 
-    public FoodmarketProductRelation() {}
-
     public FoodmarketProductRelation(ProductDonationForm donationForm, Long foodMarketId) {  // 파라미터 이름 변경
-        this.productDonationForm = donationForm;
+        this.donationForm = donationForm;
         this.foodMarketId = foodMarketId;  // 필드 이름 변경
         this.selectedDate = null;
     }
