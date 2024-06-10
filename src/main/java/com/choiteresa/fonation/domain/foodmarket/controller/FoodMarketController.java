@@ -1,10 +1,10 @@
 package com.choiteresa.fonation.domain.foodmarket.controller;
 
-
 import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketRequestDto;
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDto;
 import com.choiteresa.fonation.domain.foodmarket.model.ProductStatusForGraphResponseDto;
+import com.choiteresa.fonation.domain.foodmarket.model.UpdateProhibitedItemRequest;
 import com.choiteresa.fonation.domain.foodmarket.service.FoodMarketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,18 @@ import java.util.List;
 public class FoodMarketController {
 
     private final FoodMarketService foodMarketService;
+  
+//    @Autowired
+//    public FoodMarketController(FoodMarketService foodMarketService) {
+//        this.foodMarketService = foodMarketService;
+//    }
 
+    @PostMapping("admin/donations/{id}/bannedProduct")
+    public ResponseEntity<FetchFoodMarketResponseDto> updateProhibitedItem(@PathVariable Integer id, @RequestBody UpdateProhibitedItemRequest request) {
+        FetchFoodMarketResponseDto updatedFoodMarket = foodMarketService.updateProhibitedItem(id, request.getProhibitedItem());
+        return ResponseEntity.ok(updatedFoodMarket);
+    }
+  
     @GetMapping("/{marketId}")
     public ResponseEntity fetchFoodMarket(@PathVariable Integer marketId){
         return ResponseEntity.ok().body(foodMarketService.fetchFoodMarketById(marketId));
@@ -59,5 +70,4 @@ public class FoodMarketController {
         return ResponseEntity.ok().body(responseDto);
     }
 }
-
 

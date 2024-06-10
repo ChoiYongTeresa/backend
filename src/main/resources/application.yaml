@@ -8,6 +8,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
       dialect: org.hibernate.dialect.MySQL8Dialect
 
 OPEN_API_KEY: muTle18CP4Vm5ZGfzWV5hVYBXQ4DLbJhpSxyFQJKa2VhZWj8pIC%2BqEm%2FE64v%2F900v2it%2BzY%2BmwVmvntN5HvALw%3D%3D

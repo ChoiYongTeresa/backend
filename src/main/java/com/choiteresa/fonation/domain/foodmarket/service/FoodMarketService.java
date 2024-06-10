@@ -6,10 +6,12 @@ import com.choiteresa.fonation.domain.foodmarket.model.*;
 import com.choiteresa.fonation.domain.foodmarket.repository.FoodMarketRepository;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketCodeMapperFilePath;
 import com.choiteresa.fonation.domain.foodmarket.service.enums.FoodMarketSortType;
+import jakarta.transaction.Transactional;
 import com.choiteresa.fonation.domain.foodmarket.service.product_score_statistics.ClassificationWithCount;
 import com.choiteresa.fonation.domain.foodmarket.service.product_score_statistics.ProductScore;
 import com.choiteresa.fonation.domain.foodmarket.service.product_score_statistics.ProductScoreStatistics;
 import com.choiteresa.fonation.domain.foodmarket.service.product_score_statistics.UnityWithProductScore;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -36,7 +39,14 @@ public class FoodMarketService {
     public FoodMarket fetchFoodMarketById(int id) {
         return foodMarketRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
     }
-
+    @Transactional
+    public FetchFoodMarketResponseDto updateProhibitedItem(Integer id, String prohibitedItem) {
+        // 금지 물품을 업데이트하고, 업데이트된 푸드마켓 정보를 반환
+        FoodMarket foodMarket = foodMarketRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("FoodMarket not found"));
+        foodMarket.setProhibitedItem(prohibitedItem);
+        foodMarketRepository.save(foodMarket);
+        return foodMarket.toDto();
+    }
     public List<FoodMarket> saveFoodMarketFromRemoteConfig() throws IOException, ParseException {
         // Python 서버에서 푸드마켓에 대한 정보를 요청
 
@@ -366,4 +376,13 @@ public class FoodMarketService {
         return "대전";
     }
 
+    @Transactional
+    public FoodMarket banProduct(Integer foodMarketId, String prohibitedItem){
+        // TODO: 금지 물품 등록
+        // TODO: 금지 물품을 등록하고, 해당 푸드마켓 정보를 반환
+        FoodMarket foodMarket = foodMarketRepository.findById(foodMarketId)
+                .orElseThrow(() -> new IllegalArgumentException("FoodMarket not found"));
+        foodMarket.setProhibitedItem(prohibitedItem);
+        return foodMarketRepository.save(foodMarket);
+    }
 }

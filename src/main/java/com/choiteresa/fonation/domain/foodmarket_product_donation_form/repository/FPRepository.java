@@ -14,4 +14,6 @@ public interface FPRepository extends JpaRepository<FoodmarketProductRelation,Lo
 
     Optional<List<FoodmarketProductRelation>> findByDonationForm(ProductDonationForm donationForm);
     Optional<FoodmarketProductRelation> findByFoodMarketIdAndDonationFormId(Long foodMarketId, Long donationFormId);
+
 }
+

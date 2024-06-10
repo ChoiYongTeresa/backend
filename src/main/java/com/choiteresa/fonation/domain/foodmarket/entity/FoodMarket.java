@@ -4,10 +4,7 @@ package com.choiteresa.fonation.domain.foodmarket.entity;
 import com.choiteresa.fonation.domain.foodmarket.model.FetchFoodMarketResponseDto;
 import com.choiteresa.fonation.domain.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -44,6 +41,7 @@ public class FoodMarket {
     @Column
     public String phoneNumber;
 
+    @Setter
     @Column
     public String prohibitedItem;
 

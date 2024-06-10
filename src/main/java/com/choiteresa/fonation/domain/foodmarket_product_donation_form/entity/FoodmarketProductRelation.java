@@ -1,6 +1,7 @@
 package com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity;
 
 import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
+import com.choiteresa.fonation.domain.product.entity.Product;
 import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,11 +19,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodmarketProductRelation {
-// id, donation_form_id, foodmarket_id, selected_date
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
+
 
     // FPR many : donation_form one
     @JoinColumn(name = "donation_form_id")
@@ -32,5 +33,14 @@ public class FoodmarketProductRelation {
     @JoinColumn(name = "foodmarket_id")
     public FoodMarket foodMarket;
 
+    @OneToMany(mappedBy = "relation")
+    private List<Product> products;
+    private Long foodMarketId;  // 이름 변경
     private Date selectedDate;
+
+    public FoodmarketProductRelation(ProductDonationForm donationForm, Long foodMarketId) {  // 파라미터 이름 변경
+        this.donationForm = donationForm;
+        this.foodMarketId = foodMarketId;  // 필드 이름 변경
+        this.selectedDate = null;
+    }
 }
