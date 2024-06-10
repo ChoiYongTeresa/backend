@@ -2,6 +2,7 @@ package com.choiteresa.fonation.domain.product_donation_form.entity;
 
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
 import com.choiteresa.fonation.domain.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Table(name = "product_donation_form")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"relations"})
 public class ProductDonationForm {
     //id, donation_user_id, is_selected
     @Id
