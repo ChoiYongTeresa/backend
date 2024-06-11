@@ -9,6 +9,7 @@ import com.choiteresa.fonation.domain.attachment.service.attachment_holder.Attac
 import com.choiteresa.fonation.domain.attachment.service.attachment_holder.RandomStringGenerator;
 import com.choiteresa.fonation.domain.attachment.service.attachment_holder.TrackingAttachmentGroup;
 import com.choiteresa.fonation.domain.attachment.service.enums.AttachmentFilePath;
+import com.choiteresa.fonation.domain.exception.AttachmentNotFoundException;
 import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +36,6 @@ public class AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
     private AttachmentTracker attachmentTracker = new AttachmentTracker();
-
-    public Attachment findByFormId(Long formId) {
-        return null;
-    }
 
     public UploadAttachmentResponseDto uploadImageAttachmentAll(MultipartFile multipartFile, long formId) {
         // 이미지 파일 모두 업로드
@@ -117,7 +114,10 @@ public class AttachmentService {
 
     // TODO: 신청서 폼에 해당하는 첨부파일 하나를 Fetch
     public FetchAttachmentResponseDto fetchImageAttachmentByFormId(Long productDonationFormId) {
+
+        // TODO: 지금은 더미 데이터로 attachment를 가져옴, 바꿔야함
         Attachment attachment = attachmentRepository.findById(2L).orElseThrow();
+
 
         return FetchAttachmentResponseDto.builder()
                         .filepath(attachment.getPath())
@@ -170,14 +170,14 @@ public class AttachmentService {
                 throw new IOException("파일을 완전히 읽지 못했습니다: " + file.getName());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AttachmentNotFoundException();
         }
 
         return bytes;
     }
 
     @Scheduled(cron = "0 * * * *")
-    public void clearAll() {
+    private void clearAll() {
         // 매 정각마다 만료기간이 지난 Attachment를 트래킹에서 해제하고, 파일을 삭제
         List<Attachment> attachments =
                 attachmentTracker.unTrackingExpiredAttachment();

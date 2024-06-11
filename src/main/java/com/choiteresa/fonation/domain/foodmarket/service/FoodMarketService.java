@@ -1,6 +1,8 @@
 package com.choiteresa.fonation.domain.foodmarket.service;
 
 
+import com.choiteresa.fonation.domain.exception.ExternalApiCallException;
+import com.choiteresa.fonation.domain.exception.FoodMarketNotFoundException;
 import com.choiteresa.fonation.domain.foodmarket.entity.FoodMarket;
 import com.choiteresa.fonation.domain.foodmarket.model.*;
 import com.choiteresa.fonation.domain.foodmarket.repository.FoodMarketRepository;
@@ -47,7 +49,7 @@ public class FoodMarketService {
         foodMarketRepository.save(foodMarket);
         return foodMarket.toDto();
     }
-    public List<FoodMarket> saveFoodMarketFromRemoteConfig() throws IOException, ParseException {
+    public List<FoodMarket> saveFoodMarketFromRemoteConfig() {
         // Python 서버에서 푸드마켓에 대한 정보를 요청
 
         // 로컬 파이썬 서버 API 요청
@@ -58,7 +60,7 @@ public class FoodMarketService {
         );
 
         if (responseDto == null)
-            throw new RuntimeException("responseDto not found");
+            throw new ExternalApiCallException();
 
         // API로 얻어온 푸드마켓 정보를 Entity로 변환
         List<FoodMarket> entityList =
@@ -381,7 +383,7 @@ public class FoodMarketService {
         // TODO: 금지 물품 등록
         // TODO: 금지 물품을 등록하고, 해당 푸드마켓 정보를 반환
         FoodMarket foodMarket = foodMarketRepository.findById(foodMarketId)
-                .orElseThrow(() -> new IllegalArgumentException("FoodMarket not found"));
+                .orElseThrow(FoodMarketNotFoundException::new);
         foodMarket.setProhibitedItem(prohibitedItem);
         return foodMarketRepository.save(foodMarket);
     }

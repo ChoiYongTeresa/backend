@@ -64,23 +64,4 @@ public class AttachmentController {
 
         return new ResponseEntity<>(dto.getData(),header, HttpStatus.OK);
     }
-
-
-    @PostMapping("/old/upload")
-    public ResponseEntity uploadAttachmentOnMemory
-            (@RequestParam MultipartFile attachment, HttpSession attachmentSession){
-        // 이미지 하나를 서버에 업로드 (메모리에 첨부파일을 등록)
-        UploadAttachmentResponseDto responseDto =
-                attachmentService.uploadImageAttachment(attachment, attachmentSession.getId());
-        return ResponseEntity.ok(responseDto);
-    }
-
-
-    @PostMapping("/old/save")
-    public ResponseEntity saveAttachmentOnDataBase
-            (@RequestBody SaveAttachmentRequestDto dto){
-        // 이미지 하나를 서버에 업로드 (데이터베이스에 첨부파일을 등록)
-        attachmentService.saveImageAttachmentByGroupId(dto.getProductionFormId(), dto.getGroupId());
-        return ResponseEntity.ok(null);
-    }
 }
