@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UploadAttachmentResponseDto {
     String filepath;
-    String groupId;
 }

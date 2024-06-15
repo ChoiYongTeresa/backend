@@ -2,11 +2,8 @@ package com.choiteresa.fonation.domain.attachment.controller;
 
 
 import com.choiteresa.fonation.domain.attachment.model.FetchAttachmentResponseDto;
-import com.choiteresa.fonation.domain.attachment.model.SaveAttachmentRequestDto;
-import com.choiteresa.fonation.domain.attachment.model.UploadAttachmentRequestDto;
 import com.choiteresa.fonation.domain.attachment.model.UploadAttachmentResponseDto;
 import com.choiteresa.fonation.domain.attachment.service.AttachmentService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,41 +23,40 @@ public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    @PostMapping(value = "/upload/{formId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/upload/{productId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity uploadAndSaveAttachment
-            (@RequestPart("attachment") MultipartFile attachment, @PathVariable long formId){
+            (@RequestPart("attachment") MultipartFile attachment, @PathVariable long productId){
         // 클라이언트가 홀드 중인 이미지를 서버에 업로드
         UploadAttachmentResponseDto responseDto =
-                attachmentService.uploadImageAttachmentAll(attachment,formId);
+                attachmentService.uploadImageAttachment(attachment,productId);
 
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping( "/{formId}")
+    @PostMapping( "/{productId}")
     public ResponseEntity fetchAttachment
-            (@PathVariable long formId) throws IOException {
-        List<FetchAttachmentResponseDto> result =
-                attachmentService.fetchImageAttachmentAllByFormId(2L);
+            (@PathVariable long productId) throws IOException {
+        FetchAttachmentResponseDto result =
+                attachmentService.fetchImageAttachmentByProductId(productId);
 
+        // Header 설정
         HttpHeaders header = new HttpHeaders();
-        File file = new File(result.get(0).getFilepath());
+        File file = new File(result.getFilepath());
+        header.add("Content-type", Files.probeContentType(file.toPath()));
 
-        header.add("Content-type", Files.probeContentType(file.toPath())); //파일의 컨텐츠타입을 직접 구해서 header에 저장
-
-        return new ResponseEntity<>(result.stream().
-                map(FetchAttachmentResponseDto::getData).toList(), header, HttpStatus.OK);
+        return new ResponseEntity<>(result.getData(), header, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity fetchImageTest() throws IOException {
         // 정상적인 응답 받음
         FetchAttachmentResponseDto dto =
-                attachmentService.fetchImageAttachmentByFormId(2L);
+                attachmentService.fetchTestImage();
         HttpHeaders header = new HttpHeaders();
         File file = new File(dto.getFilepath());
 
         header.add("Content-type", Files.probeContentType(file.toPath())); //파일의 컨텐츠타입을 직접 구해서 header에 저장
 
-        return new ResponseEntity<>(dto.getData(),header, HttpStatus.OK);
+        return new ResponseEntity<>(dto.getData(), header, HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
 package com.choiteresa.fonation.domain.attachment.entity;
-import com.choiteresa.fonation.domain.member.entity.Member;
-import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
+import com.choiteresa.fonation.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,14 +25,14 @@ public class Attachment {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
-    public ProductDonationForm form;
+    public Product product;
 
     public String getFilename(){
         String[] args = path.split("/");
         return args[args.length-1];
     }
 
-    public void setForm(ProductDonationForm form){
-        this.form = form;
+    public void setForm(Product product){
+        this.product = product;
     }
 }

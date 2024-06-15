@@ -7,6 +7,15 @@ import org.springframework.web.client.RestClientException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    protected FonationHttpErrorResponseDto handleAttachmentNotFoundException(ProductNotFoundException ex){
+        return FonationHttpErrorResponseDto.builder()
+                .status(FonationHttpErrorCode.NOT_FOUND.getStatus())
+                .message(ex.getMessage())
+                .build();
+    }
+
     @ExceptionHandler(AttachmentNotFoundException.class)
     protected FonationHttpErrorResponseDto handleAttachmentNotFoundException(AttachmentNotFoundException ex){
         return FonationHttpErrorResponseDto.builder()
