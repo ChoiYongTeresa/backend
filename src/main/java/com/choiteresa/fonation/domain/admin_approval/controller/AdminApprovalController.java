@@ -1,6 +1,6 @@
 package com.choiteresa.fonation.domain.admin_approval.controller;
 
-import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.FoodmarketProductRelationDTO;
 import com.choiteresa.fonation.domain.product_donation_form.Dto.ProductInfoDTO;
 import com.choiteresa.fonation.domain.product_donation_form.service.ProductDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +45,13 @@ public class AdminApprovalController {
     }
 
     @PostMapping("/{donationId}/approval")
-    public ResponseEntity<FoodmarketProductRelation> approveForm(@PathVariable("donationId") Long id) {
+    public ResponseEntity<FoodmarketProductRelationDTO> approveForm(@PathVariable("donationId") Long id) {
     // TODO : 도네이션 폼을 승인하는 API
         return ResponseEntity.ok(productDonationService.approveForm(id));
     }
 
     @PostMapping("/{donationId}/reject")
-    public ResponseEntity<FoodmarketProductRelation> rejectForm(@PathVariable("donationId") Long id) {
+    public ResponseEntity<FoodmarketProductRelationDTO> rejectForm(@PathVariable("donationId") Long id) {
         // TODO : 도네이션 폼을 거절하는 API
         return ResponseEntity.ok(productDonationService.rejectForm(id));
     }

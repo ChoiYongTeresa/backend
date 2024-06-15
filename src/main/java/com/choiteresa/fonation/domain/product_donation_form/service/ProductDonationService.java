@@ -1,5 +1,6 @@
 package com.choiteresa.fonation.domain.product_donation_form.service;
 
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.FoodmarketProductRelationDTO;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.repository.FPRepository;
 import com.choiteresa.fonation.domain.member.entity.Member;
@@ -56,7 +57,7 @@ public class ProductDonationService {
 //                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
 //    }
     @Transactional
-    public FoodmarketProductRelation approveForm(Long id) {
+    public FoodmarketProductRelationDTO approveForm(Long id) {
 //        ProductDonationForm form = productDonationRepository.findById(id)
 //                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
 //        form.setIsSelected(true);
@@ -64,10 +65,12 @@ public class ProductDonationService {
         FoodmarketProductRelation relation = foodmarketProductRelationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("FoodmarketProductRelation not found"));
         relation.setApprovedDate(new Date());
-        return foodmarketProductRelationRepository.save(relation);
+        FoodmarketProductRelation savedRelation = foodmarketProductRelationRepository.save(relation);
+        return new FoodmarketProductRelationDTO(savedRelation.getId(), savedRelation.getApprovedDate(), savedRelation.getFoodMarket().getName());
+//        return foodmarketProductRelationRepository.save(relation);
     }
     @Transactional
-    public FoodmarketProductRelation rejectForm(Long id) {
+    public FoodmarketProductRelationDTO rejectForm(Long id) {
 //        ProductDonationForm form = productDonationRepository.findById(id)
 //                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
 //        form.setIsSelected(false);
@@ -75,7 +78,9 @@ public class ProductDonationService {
         FoodmarketProductRelation relation = foodmarketProductRelationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("FoodmarketProductRelation not found"));
         relation.setApprovedDate(new Date());
-        return foodmarketProductRelationRepository.save(relation);
+        FoodmarketProductRelation savedRelation = foodmarketProductRelationRepository.save(relation);
+        return new FoodmarketProductRelationDTO(savedRelation.getId(), savedRelation.getApprovedDate(), savedRelation.getFoodMarket().getName());
+//        return foodmarketProductRelationRepository.save(relation);
     }
 
     public List<ProductInfoDTO> getProductDetailsByDonationId(Long donationId) {
