@@ -3,6 +3,7 @@ package com.choiteresa.fonation.domain.product.entity;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "product")
 public class Product {
     // id, relation_id, expire_date, name, quantity, store_type, category, is_selected
@@ -41,5 +43,16 @@ public class Product {
 
     @Column(nullable = false)
     private int isSelected;
+
+
+    public Product(String category, String name, int quantity, Date expireDate, int storeType, int weight, int isSelected) {
+        this.category = category;
+        this.name = name;
+        this.quantity = quantity;
+        this.expireDate = expireDate;
+        this.storeType = storeType;
+        this.weight = weight;
+        this.isSelected = isSelected;
+    }
 
 }
