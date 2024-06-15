@@ -1,9 +1,12 @@
 package com.choiteresa.fonation.domain.admin_approval.controller;
 
+import com.choiteresa.fonation.domain.admin_approval.Dto.DonationFormDTO;
+import com.choiteresa.fonation.domain.admin_approval.service.AdminApprovalService;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.dto.FoodmarketProductRelationDTO;
 import com.choiteresa.fonation.domain.product_donation_form.Dto.ProductInfoDTO;
 import com.choiteresa.fonation.domain.product_donation_form.service.ProductDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,21 +17,24 @@ import java.util.List;
 public class AdminApprovalController {
     @Autowired
     private ProductDonationService productDonationService;
+    @Autowired
+    private AdminApprovalService adminApprovalService;
 
     @Autowired
     public AdminApprovalController(ProductDonationService productDonationService) {
         this.productDonationService = productDonationService;
     }
-//    @GetMapping("/requestlist")
-//    public ResponseEntity<?> fetchDonationRequests() {
-//        try {
-//            List<DonationRequestDto> donationRequests = adminApprovalService.fetchAllDonationRequests();
-//            return ResponseEntity.ok(donationRequests);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//
-//        }
-//    }]
+    @GetMapping("/requestList")
+    public ResponseEntity<?> getDonationFormsByFoodMarket(@RequestParam Long foodMarketId) {
+        // TODO : 해당 푸드마켓의 도네이션 폼 목록을 가져오는 API
+        try {
+            List<DonationFormDTO> donationForms = adminApprovalService.getAllDonationFormsForFoodMarket(foodMarketId);
+            return ResponseEntity.ok(donationForms);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to retrieve donation forms: " + e.getMessage());
+        }
+    }
     @GetMapping("/{donationId}")
     public ResponseEntity<?> getDonationDetails(@PathVariable("donationId") Long id) {
         List<ProductInfoDTO> productDetails = productDonationService.getProductDetailsByDonationId(id);
