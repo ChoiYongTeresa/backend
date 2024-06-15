@@ -1,22 +1,27 @@
 package com.choiteresa.fonation.domain.product_donation_form.service;
 
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
 import com.choiteresa.fonation.domain.foodmarket_product_donation_form.repository.FPRepository;
 import com.choiteresa.fonation.domain.member.entity.Member;
 import com.choiteresa.fonation.domain.member.repository.MemberRepository;
 import com.choiteresa.fonation.domain.product.repository.ProductRepository;
 import com.choiteresa.fonation.domain.product_donation_form.Dto.DonationFormRequest;
+import com.choiteresa.fonation.domain.product_donation_form.Dto.ProductInfoDTO;
 import com.choiteresa.fonation.domain.product_donation_form.entity.ProductDonationForm;
 import com.choiteresa.fonation.domain.product_donation_form.repository.ProductDonationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductDonationService {
     private final ProductDonationRepository productDonationRepository;
-    private final FPRepository foodmarketProductRelationRepository;
+    @Autowired
+    private FPRepository foodmarketProductRelationRepository;
     private ProductRepository productRepository;
     private MemberRepository memberRepository;
 
@@ -40,25 +45,54 @@ public class ProductDonationService {
         return productDonationRepository.save(form);
     }
 
-    public ProductDonationForm getForm(Long id) {
-        return productDonationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
+//    public ProductDonationForm getForm(Long id) {
+//        Optional<ProductDonationForm> optionalForm = productDonationRepository.findById(id);
+//        if (!optionalForm.isPresent()) {
+//            throw new IllegalArgumentException("ProductDonationForm not found");
+//        }
+//        ProductDonationForm form = optionalForm.get();
+//        return new ProductInfoDTO(form.getId(), form.getDonationUser().getMemberId().toString(), form.get)
+//        return productDonationRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
+//    }
+    @Transactional
+    public FoodmarketProductRelation approveForm(Long id) {
+//        ProductDonationForm form = productDonationRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
+//        form.setIsSelected(true);
+//        return productDonationRepository.save(form);
+        FoodmarketProductRelation relation = foodmarketProductRelationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("FoodmarketProductRelation not found"));
+        relation.setApprovedDate(new Date());
+        return foodmarketProductRelationRepository.save(relation);
     }
     @Transactional
-    public ProductDonationForm approveForm(Long id) {
-        ProductDonationForm form = productDonationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
-//        form.setStatus("APPROVED");
-        form.setIsSelected(true);
-        return productDonationRepository.save(form);
+    public FoodmarketProductRelation rejectForm(Long id) {
+//        ProductDonationForm form = productDonationRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
+//        form.setIsSelected(false);
+//        return productDonationRepository.save(form);
+        FoodmarketProductRelation relation = foodmarketProductRelationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("FoodmarketProductRelation not found"));
+        relation.setApprovedDate(new Date());
+        return foodmarketProductRelationRepository.save(relation);
     }
-    @Transactional
-    public ProductDonationForm rejectForm(Long id) {
-        ProductDonationForm form = productDonationRepository.findById(id)
+
+    public List<ProductInfoDTO> getProductDetailsByDonationId(Long donationId) {
+        ProductDonationForm form = productDonationRepository.findById(donationId)
                 .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
-//        form.setStatus("REJECTED");
-        form.setIsSelected(false);
-        return productDonationRepository.save(form);
+        return form.getRelations().stream()
+                .flatMap(relation -> relation.getProducts().stream()
+                .map(product -> new ProductInfoDTO(
+                form.getDonationUser().getMemberName(),
+                form.getDonationUser().getPhoneNumber(),
+                form.getDonationUser().getEmail(),
+                product.getCategory(),
+                product.getName(),
+                product.getQuantity(),
+                product.getExpireDate(),
+                product.getStoreType()
+        ))).collect(Collectors.toList());
     }
 //    @Transactional
 //    public ProductDonationForm createDonationForm(Long userId) {

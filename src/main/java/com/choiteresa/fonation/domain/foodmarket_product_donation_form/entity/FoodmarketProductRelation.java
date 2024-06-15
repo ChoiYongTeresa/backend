@@ -35,12 +35,16 @@ public class FoodmarketProductRelation {
 
     @OneToMany(mappedBy = "relation")
     private List<Product> products;
-    private Long foodMarketId;  // 이름 변경
-    private Date selectedDate;
 
-    public FoodmarketProductRelation(ProductDonationForm donationForm, Long foodMarketId) {  // 파라미터 이름 변경
+    private Date selectedDate;  // 기부자가 해당 푸드 마켓을 선정한 날짜
+
+    @Column(nullable = true)
+    private Date approvedDate; // 관리자가 해당 푸드 마켓을 승인/거부한 날짜 (null이면 아직 승인/거부되지 않은 상태)
+
+    public FoodmarketProductRelation(ProductDonationForm donationForm, FoodMarket foodMarketId) {  // 파라미터 이름 변경
         this.donationForm = donationForm;
-        this.foodMarketId = foodMarketId;  // 필드 이름 변경
+        this.foodMarket = foodMarket;  // 필드 이름 변경
         this.selectedDate = null;
+        this.approvedDate = null;
     }
 }
