@@ -23,7 +23,7 @@ public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    @PostMapping(value = "/upload/{productId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{productId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity uploadAndSaveAttachment
             (@RequestPart("attachment") MultipartFile attachment, @PathVariable long productId){
         // 클라이언트가 홀드 중인 이미지를 서버에 업로드
@@ -33,7 +33,7 @@ public class AttachmentController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping( "/{productId}")
+    @GetMapping( "/{productId}")
     public ResponseEntity fetchAttachment
             (@PathVariable long productId) throws IOException {
         FetchAttachmentResponseDto result =
