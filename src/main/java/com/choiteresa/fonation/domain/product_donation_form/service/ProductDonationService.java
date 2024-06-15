@@ -36,7 +36,7 @@ public class ProductDonationService {
         form.setDonationUser(member);
     }
     public ProductDonationForm submitDonationForm(ProductDonationForm form) {
-        form.setStatus("WAITING");
+//        form.setStatus("WAITING");
         return productDonationRepository.save(form);
     }
 
@@ -48,7 +48,7 @@ public class ProductDonationService {
     public ProductDonationForm approveForm(Long id) {
         ProductDonationForm form = productDonationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
-        form.setStatus("APPROVED");
+//        form.setStatus("APPROVED");
         form.setIsSelected(true);
         return productDonationRepository.save(form);
     }
@@ -56,7 +56,7 @@ public class ProductDonationService {
     public ProductDonationForm rejectForm(Long id) {
         ProductDonationForm form = productDonationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
-        form.setStatus("REJECTED");
+//        form.setStatus("REJECTED");
         form.setIsSelected(false);
         return productDonationRepository.save(form);
     }

@@ -37,7 +37,6 @@ public class ProductDonationForm {
     @Column(nullable = false)
     private boolean isSelected = false;
 
-    private String status;
 
 //    private LocalDateTime createdAt;
 //
