@@ -1,10 +1,12 @@
 package com.choiteresa.fonation.domain.product_donation_form.Dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
+@Setter
 public class ProductRequest {
 
     private String category;
@@ -13,9 +15,5 @@ public class ProductRequest {
     private int storeType;
     private Date expireDate;
     private int weight;
-    private boolean isSelected;
-
-    public boolean getIsSelected() {
-        return isSelected;
-    }
+    private int isSelected;
 }

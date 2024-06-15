@@ -22,11 +22,6 @@ import java.util.List;
 public class FoodMarketController {
 
     private final FoodMarketService foodMarketService;
-  
-//    @Autowired
-//    public FoodMarketController(FoodMarketService foodMarketService) {
-//        this.foodMarketService = foodMarketService;
-//    }
 
     @PostMapping("admin/donations/{id}/bannedProduct")
     public ResponseEntity<FetchFoodMarketResponseDto> updateProhibitedItem(@PathVariable Integer id, @RequestBody UpdateProhibitedItemRequest request) {

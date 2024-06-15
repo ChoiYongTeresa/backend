@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,18 +31,12 @@ public class ProductDonationForm {
     @JoinColumn(name = "member_id")
     private Member donationUser; // donationUserId였는데 변경됨.
 
-    @OneToMany(mappedBy = "donationForm")
-    private List<FoodmarketProductRelation> relations;
+    @OneToMany(mappedBy = "donationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FoodmarketProductRelation> relations = new ArrayList<>();
 
 
     @Column(nullable = false)
     private boolean isSelected = false;
-
-    private String status;
-
-//    private LocalDateTime createdAt;
-//
-//    private LocalDateTime updatedAt;
 
     public ProductDonationForm(Member donationUserId) {
         this.donationUser = donationUserId;

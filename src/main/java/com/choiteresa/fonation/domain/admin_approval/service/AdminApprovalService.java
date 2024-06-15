@@ -1,6 +1,8 @@
 package com.choiteresa.fonation.domain.admin_approval.service;
 
-import com.choiteresa.fonation.domain.admin_approval.Dto.DonationRequestDto;
+import com.choiteresa.fonation.domain.admin_approval.Dto.DonationFormDTO;
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.entity.FoodmarketProductRelation;
+import com.choiteresa.fonation.domain.foodmarket_product_donation_form.repository.FPRepository;
 import com.choiteresa.fonation.domain.product_donation_form.repository.ProductDonationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,21 +14,18 @@ import java.util.stream.Collectors;
 public class AdminApprovalService {
     @Autowired
     private ProductDonationRepository productDonationRepository;
-    public List<DonationRequestDto> getAllDonationRequests() {
-        return productDonationRepository.findAll().stream()
-                .flatMap(form -> form.getRelations().stream())
-                .flatMap(relation -> relation.getProducts().stream().map(product -> {
-                    DonationRequestDto dto = new DonationRequestDto();
-                    dto.setName(relation.getDonationForm().getDonationUser().getMemberName());
-                    dto.setPhone(relation.getDonationForm().getDonationUser().getPhoneNumber());
-                    dto.setEmail(relation.getDonationForm().getDonationUser().getEmail());
-                    dto.setProductCategory(product.getCategory());
-                    dto.setProductName(product.getName());
-                    dto.setProductNum(product.getQuantity());
-                    dto.setExpireDate(product.getExpireDate());
-                    dto.setProductStorage(product.getStoreType());
-                    return dto;
-                }))
+    @Autowired
+    private FPRepository foodmarketProductRelationRepository;
+    public List<DonationFormDTO> getAllDonationFormsForFoodMarket(Long foodMarketId) {
+        List<FoodmarketProductRelation> relations = foodmarketProductRelationRepository.findByFoodMarketId(foodMarketId);
+        return relations.stream()
+                .map(relation -> new DonationFormDTO(
+                        relation.getDonationForm().getId(),
+                        relation.getFoodMarket() != null ? relation.getFoodMarket().getName() : "Unknown Market",
+                        relation.getDonationForm().getDonationUser().getMemberName(),
+                        relation.getSelectedDate(),
+                        relation.getApprovedDate()
+                ))
                 .collect(Collectors.toList());
     }
 }
