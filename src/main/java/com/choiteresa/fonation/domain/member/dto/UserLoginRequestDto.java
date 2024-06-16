@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class UserLoginRequestDto {
-    private String memberId;
-    private String password;
+    String memberId;
+    String password;
 
 //    public Member toEntity(Role role){
 //        return Member.builder()

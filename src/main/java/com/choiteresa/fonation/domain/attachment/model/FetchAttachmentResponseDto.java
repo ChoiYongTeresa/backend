@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class FetchAttachmentResponseDto {
     String filepath;
-    Long productDonationId;
+    Long productId;
     byte[] data;
 }

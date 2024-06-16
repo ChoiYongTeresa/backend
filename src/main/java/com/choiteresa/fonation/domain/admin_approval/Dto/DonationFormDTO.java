@@ -11,8 +11,8 @@ public class DonationFormDTO {
     private Long donationFormId;
     private String foodMarketName;
     private String donorName;
-    private String selectedDate;  // null 허용
-    private String approvedDate;  // null 허용
+    private String selectedDate;  // null
+    private String approvedDate;  // null
 
     public DonationFormDTO(Long donationFormId, String foodMarketName, String donorName, Date selectedDate, Date approvedDate) {
         this.donationFormId = donationFormId;
