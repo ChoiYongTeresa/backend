@@ -33,9 +33,10 @@ public class AttachmentController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping( "/{productId}")
+    @GetMapping("/load")
     public ResponseEntity fetchAttachment
-            (@PathVariable long productId) throws IOException {
+            (@RequestParam long productId) throws IOException {
+
         FetchAttachmentResponseDto result =
                 attachmentService.fetchImageAttachmentByProductId(productId);
 
