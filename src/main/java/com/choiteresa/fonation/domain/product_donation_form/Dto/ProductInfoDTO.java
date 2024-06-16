@@ -30,31 +30,5 @@ public class ProductInfoDTO {
         this.relationId = relationId;
 
     }
-//    private Long donationId;
-//    private String userId;
-//    private Date approvedDate;
-//
-//    public ProductInfoDTO(Long donationId, String userId, Date approvedDate) {
-//        this.donationId = donationId;
-//        this.userId = userId;
-//        this.approvedDate = approvedDate;
-//    }
-//    public Long getDonationId() {
-//        return donationId;
-//    }
-//    public void setDonationId(Long donationId) {
-//        this.donationId = donationId;
-//    }
-//    public String getUserId() {
-//        return userId;
-//    }
-//    public void setUserId(String userId) {
-//        this.userId = userId;
-//    }
-//    public Date getApprovedDate() {
-//        return approvedDate;
-//    }
-//    public void setApprovedDate(Date approvedDate) {
-//        this.approvedDate = approvedDate;
-//    }
+
 }

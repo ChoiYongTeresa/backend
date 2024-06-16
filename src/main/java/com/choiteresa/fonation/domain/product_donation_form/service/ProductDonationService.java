@@ -120,18 +120,6 @@ public class ProductDonationService {
                 relation.getId()
         ))).collect(Collectors.toList());
     }
-//    @Transactional
-//    public ProductDonationForm createDonationForm(Long userId) {
-//        ProductDonationForm form = new ProductDonationForm(userId);
-//        return productDonationRepository.save(form);
-//    }
-//
-//    @Transactional
-//    public FoodmarketProductRelation addFoodMarketRelation(Long formId, Long foodmarketId) {
-//        ProductDonationForm form = productDonationRepository.findById(formId)
-//                .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
-//        FoodmarketProductRelation relation = new FoodmarketProductRelation(form, foodmarketId);
-//        return foodmarketProductRelationRepository.save(relation);
-//    }
+
 
 }
