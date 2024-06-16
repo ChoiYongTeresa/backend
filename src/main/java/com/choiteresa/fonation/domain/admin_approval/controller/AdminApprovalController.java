@@ -35,9 +35,9 @@ public class AdminApprovalController {
                     .body("Failed to retrieve donation forms: " + e.getMessage());
         }
     }
-    @GetMapping("/{donationId}")
-    public ResponseEntity<?> getDonationDetails(@PathVariable("donationId") Long id) {
-        List<ProductInfoDTO> productDetails = productDonationService.getProductDetailsByDonationId(id);
+    @GetMapping("/{donationId}/details")
+    public ResponseEntity<?> getDonationDetails(@PathVariable("donationId") Long relationId, @RequestParam Long foodMarketId) {
+        List<ProductInfoDTO> productDetails = productDonationService.getProductDetailsByDonationId(relationId, foodMarketId);
         return ResponseEntity.ok(productDetails);
 //        try {
 //            ProductDonationForm form = productDonationService.getForm(id);
