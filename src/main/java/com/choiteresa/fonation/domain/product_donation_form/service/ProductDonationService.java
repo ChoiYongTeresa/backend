@@ -101,10 +101,12 @@ public class ProductDonationService {
         return new FoodmarketProductRelationDTO(savedRelation.getId(), savedRelation.getApprovedDate(), savedRelation.getFoodMarket().getName());
     }
 
-    public List<ProductInfoDTO> getProductDetailsByDonationId(Long donationId) {
+    public List<ProductInfoDTO> getProductDetailsByDonationId(Long donationId, Long foodMarketId) {
+        // TODO : 도네이션 폼에 속한 제품들의 정보를 가져오는 API
         ProductDonationForm form = productDonationRepository.findById(donationId)
                 .orElseThrow(() -> new IllegalArgumentException("ProductDonationForm not found"));
         return form.getRelations().stream()
+                .filter(relation -> relation.getFoodMarket().getId().equals(foodMarketId))
                 .flatMap(relation -> relation.getProducts().stream()
                 .map(product -> new ProductInfoDTO(
                 form.getDonationUser().getMemberName(),
@@ -114,7 +116,8 @@ public class ProductDonationService {
                 product.getName(),
                 product.getQuantity(),
                 product.getExpireDate(),
-                product.getStoreType()
+                product.getStoreType(),
+                relation.getId()
         ))).collect(Collectors.toList());
     }
 //    @Transactional
