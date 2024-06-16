@@ -22,43 +22,33 @@ public class MemberController {
 
     @PostMapping("/register/user")
     @ResponseBody
-    public ResponseEntity<UserRegisterResponseDto> registerUser(@RequestBody UserRegisterRequestDto memberDto){
+    public ResponseEntity<UserRegisterResponseDto> registerUser(@RequestBody UserRegisterRequestDto memberDto) {
         return ResponseEntity.ok(
                 memberService.registerUserMember(memberDto));
     }
+
     @PostMapping("/register/admin")
     @ResponseBody
-    public ResponseEntity<AdminRegisterResponseDto> registerAdmin(@RequestBody AdminRegisterRequestDto memberDto){
+    public ResponseEntity<AdminRegisterResponseDto> registerAdmin(@RequestBody AdminRegisterRequestDto memberDto) {
         return ResponseEntity.ok(
                 memberService.registerAdminMember(memberDto));
     }
-
-//    @PostMapping("/login/user")
-//    public ResponseEntity<UserLoginResponseDto> loginUser(@RequestBody UserLoginRequestDto loginRequest){
-//        log.info("request for login");
-//        return ResponseEntity.ok(
-//                memberService.loginUser(loginRequest));
-//    }
-//    @PostMapping("/login/admin")
-//    public ResponseEntity<AdminLoginResponseDto> loginAdmin(@RequestBody AdminLoginRequestDto loginRequest){
-//        return ResponseEntity.ok(
-//                memberService.loginAdmin(loginRequest));
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequest){
         return ResponseEntity.ok(
                 memberService.login(loginRequest));
     }
+
     @GetMapping("/summary/{member_id}")
-    public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@RequestBody SummaryRequestDto summaryRequest){
+    public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@RequestBody SummaryRequestDto summaryRequest) {
         Optional<Member> findMember = memberService.summaryMemberInfo(summaryRequest);
 
-        if(findMember.isPresent()){
+        if (findMember.isPresent()) {
             SummaryDto summary = SummaryDto.fromEntity(findMember.get());
-            return ResponseEntity.ok(SummaryResponseDto.fromEntity(1,summary));
-        } else{
-            return ResponseEntity.ok(SummaryResponseDto.fromEntity(-1,null));
+            return ResponseEntity.ok(SummaryResponseDto.fromEntity(1, summary));
+        } else {
+            return ResponseEntity.ok(SummaryResponseDto.fromEntity(-1, null));
         }
     }
 }
