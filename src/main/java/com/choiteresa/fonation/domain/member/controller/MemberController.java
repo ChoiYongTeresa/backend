@@ -50,9 +50,9 @@ public class MemberController {
         return ResponseEntity.ok(
                 memberService.login(loginRequest));
     }
-    @GetMapping("/summary/{member_id}")
-    public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@RequestBody SummaryRequestDto summaryRequest){
-        Optional<Member> findMember = memberService.summaryMemberInfo(summaryRequest);
+    @GetMapping("/summary/{memberId}")
+    public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@PathVariable("memberId") String memberId){
+        Optional<Member> findMember = memberService.summaryMemberInfo(memberId);
 
         if(findMember.isPresent()){
             SummaryDto summary = SummaryDto.fromEntity(findMember.get());

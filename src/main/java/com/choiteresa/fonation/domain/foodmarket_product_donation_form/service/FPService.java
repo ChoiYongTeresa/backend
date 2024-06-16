@@ -25,8 +25,8 @@ public class FPService {
     private final ProductRepository productRepostiroy;
     private final ProductDonationRepository productDonationRepository;
 
-    public List<FoodmarketProductRelation> findFPRelation(SelectedProductRequestDto productsRequest){
-        Optional<ProductDonationForm> form = productDonationRepository.findById(productsRequest.getDonationFormId());
+    public List<FoodmarketProductRelation> findFPRelation(Long listRequest){
+        Optional<ProductDonationForm> form = productDonationRepository.findById(listRequest);
         Optional<List<FoodmarketProductRelation>> relations = FPRepository.findByDonationForm(form.get());
 
         if(relations.isPresent()) {

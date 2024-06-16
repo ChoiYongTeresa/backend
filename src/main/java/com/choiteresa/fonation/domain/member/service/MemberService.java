@@ -116,8 +116,8 @@ public class MemberService {
         }
     }
 
-    public Optional<Member> summaryMemberInfo(SummaryRequestDto summaryRequest) {
-        Optional<Member> findMember = memberRepository.findByMemberId(summaryRequest.getMemberId());
+    public Optional<Member> summaryMemberInfo(String memberId) {
+        Optional<Member> findMember = memberRepository.findByMemberId(memberId);
 
         return findMember;
     }

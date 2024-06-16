@@ -7,14 +7,14 @@ import lombok.Getter;
 @Builder
 public class LoginResponseDto {
     private int status;
-    private Long foodmarketId;
+    private Long foodMarketId;
 
     private String role;
 
     public static LoginResponseDto fromEntity(int status, Long foodmarketId, String role) {
         return LoginResponseDto.builder()
                 .status(status)
-                .foodmarketId(foodmarketId)
+                .foodMarketId(foodmarketId)
                 .role(role)
                 .build();
     }

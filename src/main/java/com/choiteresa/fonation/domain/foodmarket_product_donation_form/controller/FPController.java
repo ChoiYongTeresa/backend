@@ -20,9 +20,9 @@ public class FPController {
 
     private final FPService FPService;
 
-    @PostMapping("/selected_info")
+    @GetMapping("/selected_info")
     @ResponseBody
-    public ResponseEntity<List<SelectedProductResponseDto>> getSelectedProducts (@RequestBody SelectedProductRequestDto listRequest){
+    public ResponseEntity<List<SelectedProductResponseDto>> getSelectedProducts (@RequestParam(value = "donationFormId") Long listRequest){
         List<FoodmarketProductRelation> relations = FPService.findFPRelation(listRequest);
         List<SelectedProductResponseDto> listResponse = FPService.findSelectedProductList(relations);
         return ResponseEntity.ok(listResponse);
