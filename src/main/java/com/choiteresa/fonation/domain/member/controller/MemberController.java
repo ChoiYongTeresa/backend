@@ -4,6 +4,7 @@ import com.choiteresa.fonation.domain.member.dto.*;
 import com.choiteresa.fonation.domain.member.entity.Member;
 import com.choiteresa.fonation.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -31,15 +33,22 @@ public class MemberController {
                 memberService.registerAdminMember(memberDto));
     }
 
-    @PostMapping("/login/user")
-    public ResponseEntity<UserLoginResponseDto> loginUser(@RequestBody UserLoginRequestDto loginRequest){
+//    @PostMapping("/login/user")
+//    public ResponseEntity<UserLoginResponseDto> loginUser(@RequestBody UserLoginRequestDto loginRequest){
+//        log.info("request for login");
+//        return ResponseEntity.ok(
+//                memberService.loginUser(loginRequest));
+//    }
+//    @PostMapping("/login/admin")
+//    public ResponseEntity<AdminLoginResponseDto> loginAdmin(@RequestBody AdminLoginRequestDto loginRequest){
+//        return ResponseEntity.ok(
+//                memberService.loginAdmin(loginRequest));
+//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequest){
         return ResponseEntity.ok(
-                memberService.loginUser(loginRequest));
-    }
-    @PostMapping("/login/admin")
-    public ResponseEntity<AdminLoginResponseDto> loginAdmin(@RequestBody AdminLoginRequestDto loginRequest){
-        return ResponseEntity.ok(
-                memberService.loginAdmin(loginRequest));
+                memberService.login(loginRequest));
     }
     @GetMapping("/summary/{member_id}")
     public ResponseEntity<SummaryResponseDto> summaryMemerInfo(@RequestBody SummaryRequestDto summaryRequest){

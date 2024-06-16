@@ -59,6 +59,31 @@ public class MemberService {
         return findMember.isPresent();
     }
 
+    public LoginResponseDto login(LoginRequestDto loginRequest){
+        Optional<Member> findMember = memberRepository.findByMemberId(loginRequest.getMemberId());
+
+        if (findMember.isPresent() && findMember.get().getPassword().equals(loginRequest.getPassword())) {
+            if (findMember.get().getRole().getRoleName().equals("user")) {
+
+                return LoginResponseDto.fromEntity(1, -1L, findMember.get().getRole().getRoleName());
+
+            } else if (findMember.get().getRole().getRoleName().equals("admin")) {
+
+                Optional<FoodMarket> market = foodMarketRepository.findByAdmin(findMember.get());
+
+                if (market.isPresent()) {
+                    return LoginResponseDto.fromEntity(1, market.get().getId(), findMember.get().getRole().getRoleName());
+                } else {
+                    return LoginResponseDto.fromEntity(1, -1L, findMember.get().getRole().getRoleName());
+                }
+
+            }
+        }
+
+        return LoginResponseDto.fromEntity(-1,-1L, "로그인 실패");
+
+    }
+
     public UserLoginResponseDto loginUser(UserLoginRequestDto loginRequest) {
         Optional<Member> findMember = memberRepository.findByMemberId(loginRequest.getMemberId());
 

@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "foodmarket_product_relation")
+@Table(name = "food_market_product_relation")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodmarketProductRelation {
@@ -25,17 +25,18 @@ public class FoodmarketProductRelation {
 
 
     // FPR many : donation_form one
-    @JoinColumn(name = "donation_form_id")
+    @JoinColumn(name = "product_donation_form_id")
     @ManyToOne
     public ProductDonationForm donationForm;
 
     @ManyToOne
-    @JoinColumn(name = "foodmarket_id")
+    @JoinColumn(name = "food_market_id")
     public FoodMarket foodMarket;
 
     @OneToMany(mappedBy = "relation")
     private List<Product> products;
 
+    @Column
     private Date selectedDate;  // 기부자가 해당 푸드 마켓을 선정한 날짜
 
     @Column(nullable = true)

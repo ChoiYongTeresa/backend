@@ -20,7 +20,7 @@ public class FPController {
 
     private final FPService FPService;
 
-    @GetMapping("/selected_info")
+    @PostMapping("/selected_info")
     @ResponseBody
     public ResponseEntity<List<SelectedProductResponseDto>> getSelectedProducts (@RequestBody SelectedProductRequestDto listRequest){
         List<FoodmarketProductRelation> relations = FPService.findFPRelation(listRequest);
@@ -28,7 +28,7 @@ public class FPController {
         return ResponseEntity.ok(listResponse);
     }
 
-    @PostMapping("selection/{foodmarket_id}")
+    @PostMapping("selection")
     @ResponseBody
     public ResponseEntity<MarketSelectionResponseDto> selectMarket (@RequestBody MarketSelectionRequestDto selectRequest){
         return ResponseEntity.ok(FPService.selectMarket(selectRequest));
